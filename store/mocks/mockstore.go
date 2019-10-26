@@ -7,21 +7,28 @@ import (
 )
 
 //Store mock store
-type Store struct{}
+type Store struct {
+	connErr bool
+}
 
 //NewStore creates a mock store for testing
-func NewStore() (*Store, error) {
-	return &Store{}, nil
+func NewStore(connErr bool) (*Store, error) {
+	return &Store{connErr: connErr}, nil
 }
 
 //CreateGame creates a mock game with id 123
 func (ms *Store) CreateGame() (string, error) {
+	if ms.connErr {
+		return "", &errors.ErrDBConnection{ConnectionString: "mock failed connection"}
+	}
 	return "123", nil
 }
 
 //GetGame GetGame
 func (ms *Store) GetGame(gameID string) (*models.Game, error) {
-
+	if ms.connErr {
+		return nil, &errors.ErrDBConnection{ConnectionString: "mock failed connection"}
+	}
 	if gameID == "69" {
 		return &models.Game{
 			Model: gorm.Model{
