@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  webrung_tests_service:
+    environment:
+      - PORT=8001
+      - DB_DIALECT=sqlite3
+      - DB_URL=/tmp/webrung.db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/go/src/github.com/minhajuddinkhan/webrung/"
+    ports:
+      - "8001:8001"

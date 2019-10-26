@@ -1,0 +1,62 @@
+package webrung_test
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"testing"
+
+	"github.com/davecgh/go-spew/spew"
+	"github.com/stretchr/testify/assert"
+)
+
+var PORT = os.Getenv("PORT")
+var HOST = os.Getenv("HOST")
+var API_URL = fmt.Sprintf("http://%s:%s", HOST, PORT)
+
+type GameResponse struct {
+	GameID        string `json:"game_id"`
+	PlayersJoined int    `json:"players_joined"`
+}
+
+var gameID string
+
+func TestGame_CanCreateNewWithAPI(t *testing.T) {
+
+	c := http.Client{}
+	contentType := "application/json"
+	reqURI := fmt.Sprintf("%s/api/v1/games", API_URL)
+	resp, err := c.Post(reqURI, contentType, nil)
+	assert.Nil(t, err)
+	if err != nil {
+		spew.Dump(err.Error())
+	}
+	assert.NotNil(t, resp)
+
+	b, err := ioutil.ReadAll(resp.Body)
+	assert.Nil(t, err)
+
+	var gr GameResponse
+	assert.Nil(t, json.Unmarshal(b, &gr))
+	assert.NotNil(t, resp)
+
+	assert.NotZero(t, len(gr.GameID))
+	assert.Equal(t, 0, gr.PlayersJoined)
+	gameID = gr.GameID
+}
+
+func TestGame_CanGetWithAPI(t *testing.T) {
+
+	c := http.Client{}
+	resp, err := c.Get(fmt.Sprintf("%s/api/v1/games/%s", API_URL, gameID))
+	assert.Nil(t, err)
+	bytes, err := ioutil.ReadAll(resp.Body)
+	assert.Nil(t, err)
+
+	var gr GameResponse
+	err = json.Unmarshal(bytes, &gr)
+	assert.Nil(t, err)
+	assert.Equal(t, gr.GameID, gameID)
+}
