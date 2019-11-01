@@ -9,5 +9,6 @@ type Player struct {
 	gorm.Model
 	Name     string
 	Cards    []Card
+	InGame   uint
 	HandsWon int
 }

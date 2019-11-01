@@ -9,6 +9,7 @@ import (
 type GameManager interface {
 	CreateGame() (game *entities.Game, err error)
 	GetGame(gameID string) (*entities.Game, error)
+	// JoinGame(player *entities.Player, gameID string) error
 }
 
 type gameManager struct {
@@ -40,3 +41,12 @@ func (g *gameManager) GetGame(gameID string) (*entities.Game, error) {
 	return &gameEntity, nil
 
 }
+
+// func (g *gameManager) JoinGame(player *entities.Player, gameID string) error {
+// 	game, err := g.store.GetGame(gameID)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	return nil
+// }

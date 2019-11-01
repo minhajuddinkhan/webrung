@@ -17,8 +17,7 @@ func (sqlite *Store) CreateGame() (string, error) {
 	defer db.Close()
 
 	game := models.Game{
-		Players: []models.Player{},
-		Winners: []models.Player{},
+		Winner: models.Player{},
 	}
 
 	if err := db.Create(&game).Error; err != nil {

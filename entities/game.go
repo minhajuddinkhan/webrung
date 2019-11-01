@@ -17,5 +17,5 @@ func (game *Game) Marshal(g *models.Game) {
 
 	gameID := strconv.FormatUint(uint64(g.Model.ID), 10)
 	game.GameID = gameID
-	game.PlayersJoined = len(g.Players)
+	game.PlayersJoined = g.PlayersJoined
 }

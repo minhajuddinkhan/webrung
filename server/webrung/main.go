@@ -44,8 +44,14 @@ func main() {
 	}
 
 	r := mux.NewRouter()
+	// Game REST
 	r.HandleFunc("/api/v1/games", controllers.CreateGame(store)).Methods("POST")
 	r.HandleFunc("/api/v1/games/{id}", controllers.GetGame(store)).Methods("GET")
+
+	// Player REST
+	r.HandleFunc("/api/v1/players", controllers.CreatePlayer(store)).Methods("POST")
+	r.HandleFunc("/api/v1/players/{id}", controllers.GetPlayer(store)).Methods("GET")
+
 	http.Handle("/", r)
 
 	spew.Dump("LISTENING ON PORT", httpPort)

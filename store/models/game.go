@@ -6,6 +6,6 @@ import (
 
 type Game struct {
 	gorm.Model
-	Players []Player
-	Winners []Player
+	Winner        Player
+	PlayersJoined int
 }
