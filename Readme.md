@@ -1,4 +1,4 @@
-# webrung
+# Rung.IO
 
 ### Application workflow:
 
@@ -17,15 +17,16 @@
     * The game record should have the turn thats being played
     * The game record should maintain the state of the hand being played.
     * The web application should establish a socket connection with the i/o server with the token provided
-    * The web application stores game id and token in socket redis against socket id
-    * The web application should put the cards against the token
+    * The io/server stores game id and token against socket id in socket redis 
+    * The io/server should put the cards for the player against the key in cards redis
 4. Joining a Game:
     * the dashboard should show a list of hosted games.
-    * `playersJoined` increments by one
-    * the web server checks 
+    * the i/o server verifies that this game has space for a new player (asks game server?)
+    * the i/o server stores the new player in cards redis with empty cards
+    * the i/o server tells the game server that a new player has joined the game.
     * the game record should maintain which player has joined.
-    * another player is added in the redis with no cards
-    * 
+    * the i/o server adds the socket connection in the socket redis with game id and token
+
 5. Disconnecting/Rejoining a Game:
     * if a player disconnects, its socket id should be searched in the socket redis.
     * it reveals the game id, and the player it was linked to.
@@ -42,8 +43,7 @@
 
 | Name | Resource |
 | ------ | ------ |
-| Architecture Diagram | <link> |
-
+| Architecture Diagram | [plugins/dropbox/README.md][PlDb] |
 
 # Test
 
