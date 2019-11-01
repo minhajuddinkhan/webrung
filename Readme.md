@@ -43,7 +43,7 @@
 
 | Name | Resource |
 | ------ | ------ |
-| Architecture Diagram | [plugins/dropbox/README.md][PlDb] |
+| Architecture Diagram | [PDF](https://drive.google.com/file/d/1HGLInELVK2gqbzHmQXzTdZCNyZRL5yjt/preview)  |
 
 # Test
 
