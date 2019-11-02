@@ -6,7 +6,9 @@ services:
       - PORT=8001
       - DB_DIALECT=sqlite3
       - DB_URL=/tmp/webrung.db
-      - AUTH_REDIS_URL=redis://auth
+      - AUTH_REDIS_URL=redis://auth-redis
+      - SOCKET_REDIS_URL=redis://socket-redis
+      
     build:
       context: .
       dockerfile: Dockerfile
@@ -28,6 +30,10 @@ services:
       - ".:/go/src/github.com/minhajuddinkhan/webrung/"
 
   auth-redis:
+    image: redis
+    expose:
+      - 6379
+  socket-redis:
     image: redis
     expose:
       - 6379

@@ -11,11 +11,11 @@ type Redis interface {
 	Ping() error
 }
 
-//NewAuthRedis returns connection of the authentication redis client
 type authRedis struct {
 	url string
 }
 
+//NewAuthRedis returns connection of the authentication redis client
 func NewAuthRedis(conf *webrung.Conf) (Redis, error) {
 	if conf == nil {
 		return nil, fmt.Errorf("redis err: nil configuration provided")

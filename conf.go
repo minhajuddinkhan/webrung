@@ -5,12 +5,13 @@ type DB struct {
 	Dialect          string
 }
 
-type AuthRedis struct {
+type Redis struct {
 	RedisURL string
 }
 
 //Conf webrung conf
 type Conf struct {
-	DB        DB
-	AuthRedis AuthRedis
+	DB          DB
+	AuthRedis   Redis
+	SocketRedis Redis
 }

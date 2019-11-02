@@ -4,16 +4,17 @@ import (
 	"os"
 	"testing"
 
+	"github.com/minhajuddinkhan/webrung/cache/socket"
+
 	"github.com/minhajuddinkhan/webrung"
-	"github.com/minhajuddinkhan/webrung/cache/auth"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestAuthRedis_PingShouldNotError(t *testing.T) {
+func TestSocketRedis_PingShouldNotError(t *testing.T) {
 
-	url := os.Getenv("AUTH_REDIS_URL")
-	r, err := auth.NewAuthRedis(&webrung.Conf{
-		AuthRedis: webrung.Redis{
+	url := os.Getenv("SOCKET_REDIS_URL")
+	r, err := socket.NewSocketRedis(&webrung.Conf{
+		SocketRedis: webrung.Redis{
 			RedisURL: url,
 		},
 	})

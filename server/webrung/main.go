@@ -38,14 +38,23 @@ func main() {
 		log.Fatal("empty auth redis url")
 	}
 
+	socketRedis := os.Getenv("SOCKET_REDIS_URL")
+	if socketRedis == "" {
+		log.Fatal("empty socket redis url")
+	}
+
 	conf := webrung.Conf{
 		DB: webrung.DB{
 			ConnectionString: dbConnectionString,
 			Dialect:          dialect,
 		},
-		AuthRedis: webrung.AuthRedis{
+		AuthRedis: webrung.Redis{
 			RedisURL: authRedis,
-		}}
+		},
+		SocketRedis: webrung.Redis{
+			RedisURL: socketRedis,
+		},
+	}
 
 	store, err := store.NewRungStore(conf.DB.Dialect, conf.DB.ConnectionString)
 	if err != nil {
