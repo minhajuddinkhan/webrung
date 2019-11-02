@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/jinzhu/gorm"
+	"github.com/minhajuddinkhan/webrung/errors"
 	"github.com/minhajuddinkhan/webrung/store/models"
 )
 
@@ -32,6 +33,25 @@ func (sqlite *Store) GetPlayer(playerID string) (*models.Player, error) {
 	player := models.Player{}
 	if err := db.Where("id = ?", playerID).First(&player).Error; err != nil {
 		//TODO:: add player not found error
+		return nil, err
+	}
+	return &player, nil
+
+}
+
+//GetPlayerByName GetPlayerByName
+func (sqlite *Store) GetPlayerByName(name string) (*models.Player, error) {
+	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	player := models.Player{}
+	if err := db.Where("name = ?", name).First(&player).Error; err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			return nil, &errors.ErrPlayerNotFound{}
+		}
 		return nil, err
 	}
 	return &player, nil

@@ -17,3 +17,7 @@ func (m *Store) CreatePlayer(p *models.Player) (string, error) {
 func (m *Store) GetPlayer(playerID string) (*models.Player, error) {
 	return &m.player, nil
 }
+
+func (m *Store) GetPlayerByName(name string) (*models.Player, error) {
+	return nil, nil
+}

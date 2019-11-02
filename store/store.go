@@ -16,6 +16,7 @@ type Store interface {
 	CreatePlayer(player *models.Player) (playerID string, err error)
 
 	GetPlayer(playerID string) (*models.Player, error)
+	GetPlayerByName(name string) (*models.Player, error)
 	//Migrate migrates all tables
 	Migrate() error
 }

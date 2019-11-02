@@ -8,4 +8,5 @@ RUN set -eux; \
 RUN mkdir -p /go/src/github.com/minhajuddinkhan/webrung/
 WORKDIR /go/src/github.com/minhajuddinkhan/webrung/
 COPY . .
-CMD go run server/webrung/main.go
+
+ENTRYPOINT ["/go/src/github.com/minhajuddinkhan/webrung/docker-entrypoint.sh"]
