@@ -8,6 +8,6 @@ RUN set -eux; \
 
 RUN mkdir -p /go/src/github.com/minhajuddinkhan/webrung/
 WORKDIR /go/src/github.com/minhajuddinkhan/webrung/
-COPY . .
-RUN go mod vendor
+ADD . /go/src/github.com/minhajuddinkhan/webrung/
+ENTRYPOINT ["/go/src/github.com/minhajuddinkhan/webrung/docker-entrypoint.sh"]
 CMD go test -v ./tests/integration/

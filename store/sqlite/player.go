@@ -29,11 +29,11 @@ func (sqlite *Store) GetPlayer(playerID string) (*models.Player, error) {
 		return nil, err
 	}
 	defer db.Close()
-	var player *models.Player
-	if err := db.Where("id = ?", playerID).First(player).Error; err != nil {
+	player := models.Player{}
+	if err := db.Where("id = ?", playerID).First(&player).Error; err != nil {
 		//TODO:: add player not found error
 		return nil, err
 	}
-	return player, nil
+	return &player, nil
 
 }

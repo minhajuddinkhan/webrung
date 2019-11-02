@@ -5,16 +5,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
-
-var PORT = os.Getenv("PORT")
-var HOST = os.Getenv("HOST")
-var API_URL = fmt.Sprintf("http://%s:%s", HOST, PORT)
 
 type GameResponse struct {
 	GameID        string `json:"game_id"`
@@ -29,6 +24,7 @@ func TestGame_CanCreateNewWithAPI(t *testing.T) {
 	contentType := "application/json"
 	reqURI := fmt.Sprintf("%s/api/v1/games", API_URL)
 	resp, err := c.Post(reqURI, contentType, nil)
+	assert.NotNil(t, resp)
 	assert.Nil(t, err)
 	if err != nil {
 		spew.Dump(err.Error())
