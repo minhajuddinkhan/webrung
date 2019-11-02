@@ -5,8 +5,6 @@ RUN set -eux; \
 		gcc \
 		musl-dev \
 	;
-RUN apk add --no-cache bash
-
 RUN mkdir -p /go/src/github.com/minhajuddinkhan/webrung/
 WORKDIR /go/src/github.com/minhajuddinkhan/webrung/
 COPY . .

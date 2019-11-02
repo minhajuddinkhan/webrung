@@ -17,7 +17,6 @@ import (
 func main() {
 	//TODO:: add migration to store.
 
-	fmt.Println("here??")
 	httpPort := os.Getenv("PORT")
 	if httpPort == "" {
 		log.Fatal("empty http port from PORT env")
@@ -33,26 +32,10 @@ func main() {
 		log.Fatal("empty db dialect from DB_DIALECT")
 	}
 
-	authRedis := os.Getenv("AUTH_REDIS_URL")
-	if authRedis == "" {
-		log.Fatal("empty auth redis url")
-	}
-
-	socketRedis := os.Getenv("SOCKET_REDIS_URL")
-	if socketRedis == "" {
-		log.Fatal("empty socket redis url")
-	}
-
 	conf := webrung.Conf{
 		DB: webrung.DB{
 			ConnectionString: dbConnectionString,
 			Dialect:          dialect,
-		},
-		AuthRedis: webrung.Redis{
-			RedisURL: authRedis,
-		},
-		SocketRedis: webrung.Redis{
-			RedisURL: socketRedis,
 		},
 	}
 
