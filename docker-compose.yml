@@ -1,11 +1,12 @@
 version: '3'
 
 services:
-  webrung_tests_service:
+  webrung:
     environment:
       - PORT=8001
       - DB_DIALECT=sqlite3
       - DB_URL=/tmp/webrung.db
+      - AUTH_REDIS_URL=redis://auth
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,3 +14,7 @@ services:
       - ".:/go/src/github.com/minhajuddinkhan/webrung/"
     ports:
       - "8001:8001"
+  auth-redis:
+    image: redis
+    expose:
+      - 6379
