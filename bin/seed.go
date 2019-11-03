@@ -1,10 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
-
-	"github.com/sirupsen/logrus"
 
 	"github.com/minhajuddinkhan/webrung/errors"
 	"github.com/minhajuddinkhan/webrung/store"
@@ -57,7 +56,6 @@ func main() {
 				if err != nil {
 					log.Fatal(err)
 				}
-				logrus.Info("player seeded!", player.Name)
 
 			default:
 				log.Fatal(err)
@@ -65,5 +63,5 @@ func main() {
 		}
 	}
 
-	logrus.Info("Database seeded!")
+	fmt.Println("Database seeded!")
 }

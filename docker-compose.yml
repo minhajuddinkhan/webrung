@@ -6,6 +6,8 @@ services:
       - PORT=8001
       - DB_DIALECT=sqlite3
       - DB_URL=/tmp/webrung.db
+      - IORUNG_HOST=localhost
+      - IORUNG_PORT=8003
     build:
       context: .
       dockerfile: Dockerfile

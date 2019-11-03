@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/rpc"
 	"os"
 
 	"github.com/davecgh/go-spew/spew"
-
 	"github.com/gorilla/mux"
 	"github.com/minhajuddinkhan/webrung"
 	"github.com/minhajuddinkhan/webrung/controllers"
@@ -15,7 +15,8 @@ import (
 )
 
 func main() {
-	//TODO:: add migration to store.
+
+	fmt.Println("here bro..")
 
 	httpPort := os.Getenv("PORT")
 	if httpPort == "" {
@@ -32,11 +33,30 @@ func main() {
 		log.Fatal("empty db dialect from DB_DIALECT")
 	}
 
+	ioRungHost := os.Getenv("IORUNG_HOST")
+	if ioRungHost == "" {
+		log.Fatal("empty iorung host")
+	}
+
+	ioRungPort := os.Getenv("IORUNG_PORT")
+	if ioRungHost == "" {
+		log.Fatal("empty iorung port")
+	}
+
 	conf := webrung.Conf{
 		DB: webrung.DB{
 			ConnectionString: dbConnectionString,
 			Dialect:          dialect,
 		},
+		IORung: webrung.IORung{
+			Host: ioRungHost,
+			Port: ioRungPort,
+		},
+	}
+
+	ioRungClient, err := rpc.DialHTTP("tcp", fmt.Sprintf("%s:%s", conf.IORung.Host, conf.IORung.Port))
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	store, err := store.NewRungStore(conf.DB.Dialect, conf.DB.ConnectionString)
@@ -56,6 +76,7 @@ func main() {
 	r.HandleFunc("/api/v1/players", controllers.CreatePlayer(store)).Methods("POST")
 	r.HandleFunc("/api/v1/players/{id}", controllers.GetPlayer(store)).Methods("GET")
 
+	r.HandleFunc("/api/v1/auth", controllers.Authenticate(ioRungClient, store)).Methods("POST")
 	http.Handle("/", r)
 
 	spew.Dump("LISTENING ON PORT", httpPort)
