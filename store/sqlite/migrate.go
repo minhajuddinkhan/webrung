@@ -16,6 +16,7 @@ func (sqlite *Store) Migrate() error {
 		models.Card{},
 		models.Game{},
 		models.Player{},
+		models.PlayersInGame{},
 	}
 	if err := db.AutoMigrate(models...).Error; err != nil {
 		return err

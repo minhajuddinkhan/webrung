@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -26,10 +25,6 @@ func TestGame_CanCreateNewWithAPI(t *testing.T) {
 	resp, err := c.Post(reqURI, contentType, nil)
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
-	if err != nil {
-		spew.Dump(err.Error())
-	}
-	assert.NotNil(t, resp)
 
 	b, err := ioutil.ReadAll(resp.Body)
 	assert.Nil(t, err)
@@ -39,7 +34,7 @@ func TestGame_CanCreateNewWithAPI(t *testing.T) {
 	assert.NotNil(t, resp)
 
 	assert.NotZero(t, len(gr.GameID))
-	assert.Equal(t, 0, gr.PlayersJoined)
+	assert.Equal(t, 1, gr.PlayersJoined)
 	gameID = gr.GameID
 }
 
@@ -55,4 +50,11 @@ func TestGame_CanGetWithAPI(t *testing.T) {
 	err = json.Unmarshal(bytes, &gr)
 	assert.Nil(t, err)
 	assert.Equal(t, gr.GameID, gameID)
+}
+
+func TestGame_CanJoin(t *testing.T) {
+	c := http.Client{}
+	resp, err := c.Get(fmt.Sprintf("%s/api/v1/games/%s", API_URL, gameID))
+	assert.Nil(t, err)
+	assert.NotNil(t, resp)
 }

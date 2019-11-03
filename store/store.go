@@ -10,13 +10,27 @@ import (
 
 //Store Store
 type Store interface {
-	CreateGame() (gameID string, err error)
+	//CreateGame creates a new game
+	CreateGame(createdBy *models.Player) (gameID string, err error)
+
+	//GetGame gets a game by id
 	GetGame(gameID string) (*models.Game, error)
+
+	//IncrementPlayersJoined IncrementPlayersJoined
+	IncrementPlayersJoined(gameID string) error
+
+	JoinGame(gameplay *models.PlayersInGame) error
+
 	//CreatePlayer creates a new player
 	CreatePlayer(player *models.Player) (playerID string, err error)
 
+	//GetPlayer gets a player
 	GetPlayer(playerID string) (*models.Player, error)
+
+	//GetPlayerByName gets a player by name
 	GetPlayerByName(name string) (*models.Player, error)
+
+	// IncrementGamePlayer() (*models.Game, error)
 	//Migrate migrates all tables
 	Migrate() error
 }

@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
-	"net/rpc"
 
 	"github.com/darahayes/go-boom"
+	"github.com/minhajuddinkhan/webrung/iorpc"
 	"github.com/minhajuddinkhan/webrung/store"
 )
 
@@ -13,17 +14,12 @@ type LoginRequest struct {
 	Username string `json:"username,omitempty"`
 }
 
-type AddPlayerRequest struct {
-	PlayerID string
-	GameID   string
-}
-
 type LoginResponse struct {
 	Token string `json:"token,omitempty"`
 }
 
 //Authenticate Authenticate
-func Authenticate(iorung *rpc.Client, store store.Store) func(w http.ResponseWriter, r *http.Request) {
+func Authenticate(iorungrpc iorpc.Client, store store.Store) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		dec := json.NewDecoder(r.Body)
@@ -33,19 +29,18 @@ func Authenticate(iorung *rpc.Client, store store.Store) func(w http.ResponseWri
 			boom.BadRequest(w, err)
 			return
 		}
-
 		player, err := store.GetPlayerByName(body.Username)
 		if err != nil {
+			fmt.Println("player not found????")
 			boom.NotFound(w, "player not found")
 			return
 		}
-		req := AddPlayerRequest{
-			PlayerID: player.Name,
+		fmt.Println("player??", player)
+		req := iorpc.AddPlayerRequest{
+			PlayerID: player.GetID(),
 			GameID:   "",
 		}
-
-		var token string
-		err = iorung.Call("InterfaceRPC.AddPlayer", req, &token)
+		token, err := iorungrpc.AddPlayer(req)
 		if err != nil {
 			boom.Internal(w, "")
 			return

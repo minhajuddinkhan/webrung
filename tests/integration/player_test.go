@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -33,9 +32,6 @@ func TestPlayer_CanCreateNewWithAPI(t *testing.T) {
 
 	resp, err := c.Post(reqURI, contentType, reader)
 	assert.Nil(t, err)
-	if err != nil {
-		spew.Dump(err.Error())
-	}
 	assert.NotNil(t, resp)
 
 	b, err = ioutil.ReadAll(resp.Body)

@@ -7,6 +7,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1
 	github.com/gorilla/mux v1.7.3
 	github.com/jinzhu/gorm v1.9.11
-	github.com/kr/pretty v0.1.0 // indirect
+	github.com/minhajuddinkhan/iorung v0.0.0-20191103141232-cd630611f156
 	github.com/stretchr/testify v1.4.0
 )

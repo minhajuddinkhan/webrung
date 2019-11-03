@@ -4,19 +4,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/rpc"
 	"os"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/gorilla/mux"
 	"github.com/minhajuddinkhan/webrung"
 	"github.com/minhajuddinkhan/webrung/controllers"
+	"github.com/minhajuddinkhan/webrung/iorpc"
 	"github.com/minhajuddinkhan/webrung/store"
 )
 
 func main() {
-
-	fmt.Println("here bro..")
 
 	httpPort := os.Getenv("PORT")
 	if httpPort == "" {
@@ -54,7 +52,7 @@ func main() {
 		},
 	}
 
-	ioRungClient, err := rpc.DialHTTP("tcp", fmt.Sprintf("%s:%s", conf.IORung.Host, conf.IORung.Port))
+	client, err := iorpc.NewIOClient(&conf)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,14 +67,13 @@ func main() {
 
 	r := mux.NewRouter()
 	// Game REST
-	r.HandleFunc("/api/v1/games", controllers.CreateGame(store)).Methods("POST")
-	r.HandleFunc("/api/v1/games/{id}", controllers.GetGame(store)).Methods("GET")
-
+	r.HandleFunc("/api/v1/games", controllers.CreateGame(store, client)).Methods("POST")
+	r.HandleFunc("/api/v1/games/{id}", controllers.GetGame(store, client)).Methods("GET")
 	// Player REST
 	r.HandleFunc("/api/v1/players", controllers.CreatePlayer(store)).Methods("POST")
 	r.HandleFunc("/api/v1/players/{id}", controllers.GetPlayer(store)).Methods("GET")
 
-	r.HandleFunc("/api/v1/auth", controllers.Authenticate(ioRungClient, store)).Methods("POST")
+	r.HandleFunc("/api/v1/auth", controllers.Authenticate(client, store)).Methods("POST")
 	http.Handle("/", r)
 
 	spew.Dump("LISTENING ON PORT", httpPort)

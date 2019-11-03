@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -23,6 +24,8 @@ func TestAuth_PlayerCanLogin(t *testing.T) {
 	c := http.Client{}
 	contentType := "application/json"
 	reqURI := fmt.Sprintf("%s/api/v1/auth", API_URL)
+
+	fmt.Println(reqURI)
 	jsonBody := []byte(`{"username": "North"}`)
 	resp, err := c.Post(reqURI, contentType, bytes.NewBuffer(jsonBody))
 	assert.Nil(t, err)
@@ -31,6 +34,7 @@ func TestAuth_PlayerCanLogin(t *testing.T) {
 	var lr loginResponse
 	dec := json.NewDecoder(resp.Body)
 	err = dec.Decode(&lr)
+	spew.Dump(err)
 	assert.Nil(t, err)
 	//is a jwt token
 	assert.Equal(t, 3, len(strings.Split(lr.Token, ".")))
