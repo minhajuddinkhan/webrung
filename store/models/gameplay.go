@@ -5,7 +5,7 @@ import "github.com/jinzhu/gorm"
 //PlayersInGame PlayersInGame
 type PlayersInGame struct {
 	gorm.Model
-	gameID   uint
+	GameID   uint
 	Game     Game
 	PlayerID uint
 	Player   Player

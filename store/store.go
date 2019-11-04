@@ -16,6 +16,9 @@ type Store interface {
 	//GetGame gets a game by id
 	GetGame(gameID string) (*models.Game, error)
 
+	//IsPlayerInGame returns if player is joined in a game
+	IsPlayerInGame(gameID string, playerID string) (bool, error)
+
 	//IncrementPlayersJoined IncrementPlayersJoined
 	IncrementPlayersJoined(gameID string) error
 

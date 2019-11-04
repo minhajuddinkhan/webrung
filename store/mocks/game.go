@@ -47,3 +47,10 @@ func (ms *Store) IncrementPlayersJoined(gameID string) error {
 	ms.game.PlayersJoined++
 	return nil
 }
+
+//IsPlayerInGame IsPlayerInGame
+func (ms *Store) IsPlayerInGame(gameID string, playerID string) (bool, error) {
+
+	//TODO:: devise strategy.
+	return false, nil
+}

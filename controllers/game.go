@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/darahayes/go-boom"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gorilla/mux"
 
 	"github.com/minhajuddinkhan/webrung/entities"
@@ -80,24 +81,25 @@ func CreateGame(store store.Store, c iorpc.Client) func(w http.ResponseWriter, r
 }
 
 //JoinGame JoinGame
-func JoinGame(iorungrpc iorpc.Client, store store.Store) func(w http.ResponseWriter, r *http.Request) {
+func JoinGame(store store.Store, iorungrpc iorpc.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		var body entities.Game
-		dec := json.NewDecoder(r.Body)
-		err := dec.Decode(&body)
-		if err != nil {
-			boom.BadRequest(w, err)
+		gameID := mux.Vars(r)["id"]
+		if gameID == "" {
+			boom.BadRequest(w, "empty game id")
 			return
 		}
+
 		token := r.Header.Get("token")
-		gameID, playerID, err := iorungrpc.Authenticate(token)
+		_, playerID, err := iorungrpc.Authenticate(token)
 		if err != nil {
 			boom.Unathorized(w, err)
 			return
 		}
 
 		gameManager := gm.NewGameManager(store, iorungrpc)
+
+		spew.Dump(playerID, gameID)
 		err = gameManager.JoinGame(
 			&entities.Player{ID: playerID},
 			&entities.Game{GameID: gameID})
@@ -107,7 +109,7 @@ func JoinGame(iorungrpc iorpc.Client, store store.Store) func(w http.ResponseWri
 			return
 		}
 		_, err = iorungrpc.SetGameIDInToken(iorpc.JoinGameRequest{
-			GameID: body.GameID,
+			GameID: gameID,
 			Token:  r.Header.Get("token"),
 		})
 

@@ -7,11 +7,11 @@ func (c *client) SetGameIDInToken(request JoinGameRequest) (bool, error) {
 		return false, err
 	}
 	defer client.Close()
-	var token string
-	err = client.Call("InterfaceRPC.SetGameIDInToken", request, &token)
+	var done bool
+	err = client.Call("InterfaceRPC.SetGameIDInToken", request, &done)
 	if err != nil {
 		return false, err
 	}
-	return true, nil
+	return done, nil
 
 }

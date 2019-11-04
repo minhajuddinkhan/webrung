@@ -69,6 +69,8 @@ func main() {
 	// Game REST
 	r.HandleFunc("/api/v1/games", controllers.CreateGame(store, client)).Methods("POST")
 	r.HandleFunc("/api/v1/games/{id}", controllers.GetGame(store, client)).Methods("GET")
+	r.HandleFunc("/api/v1/games/{id}/join", controllers.JoinGame(store, client)).Methods("GET")
+
 	// Player REST
 	r.HandleFunc("/api/v1/players", controllers.CreatePlayer(store)).Methods("POST")
 	r.HandleFunc("/api/v1/players/{id}", controllers.GetPlayer(store)).Methods("GET")

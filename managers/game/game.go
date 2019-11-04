@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/minhajuddinkhan/webrung/entities"
 	"github.com/minhajuddinkhan/webrung/iorpc"
@@ -37,13 +38,14 @@ func (g *gameManager) CreateGame(pl *entities.Player) (*entities.Game, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := g.store.JoinGame(&models.PlayersInGame{
-		Player: player,
-	}); err != nil {
+	gID, err := strconv.Atoi(gameID)
+	if err != nil {
 		return nil, err
 	}
-
-	if err := g.store.IncrementPlayersJoined(gameID); err != nil {
+	if err := g.store.JoinGame(&models.PlayersInGame{
+		GameID: uint(gID),
+		Player: player,
+	}); err != nil {
 		return nil, err
 	}
 
@@ -94,10 +96,20 @@ func (g *gameManager) JoinGame(player *entities.Player, game *entities.Game) err
 	if currentGame.PlayersJoined == 4 {
 		return fmt.Errorf("already four players joined")
 	}
+
+	present, err := g.store.IsPlayerInGame(game.GameID, player.ID)
+	if err != nil {
+		return err
+	}
+	if present {
+		return fmt.Errorf("player already present in game. cannot join again")
+	}
+
 	gameplay := models.PlayersInGame{
 		Game:   *gameModel,
 		Player: *playerModel,
 	}
+
 	if err := g.store.JoinGame(&gameplay); err != nil {
 		return err
 	}
