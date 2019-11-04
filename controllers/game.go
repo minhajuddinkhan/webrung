@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/darahayes/go-boom"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gorilla/mux"
 
 	"github.com/minhajuddinkhan/webrung/entities"
@@ -99,7 +98,6 @@ func JoinGame(store store.Store, iorungrpc iorpc.Client) func(w http.ResponseWri
 
 		gameManager := gm.NewGameManager(store, iorungrpc)
 
-		spew.Dump(playerID, gameID)
 		err = gameManager.JoinGame(
 			&entities.Player{ID: playerID},
 			&entities.Game{GameID: gameID})

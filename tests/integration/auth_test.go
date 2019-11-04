@@ -8,7 +8,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -34,7 +33,6 @@ func TestAuth_PlayerCanLogin(t *testing.T) {
 	var lr loginResponse
 	dec := json.NewDecoder(resp.Body)
 	err = dec.Decode(&lr)
-	spew.Dump(err)
 	assert.Nil(t, err)
 	//is a jwt token
 	assert.Equal(t, 3, len(strings.Split(lr.Token, ".")))

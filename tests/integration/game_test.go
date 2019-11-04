@@ -1,6 +1,7 @@
 package webrung_test
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -17,20 +18,50 @@ type GameResponse struct {
 
 var gameID string
 
-func TestGame_CanCreateNewWithAPI(t *testing.T) {
+func GetAuthToken() (string, error) {
+
+	jsonBody := []byte(`{"username": "North"}`)
+	url := fmt.Sprintf("%s/api/v1/auth", API_URL)
+	r, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonBody))
+	if err != nil {
+		return "", err
+	}
+
+	client := http.Client{}
+	resp, err := client.Do(r)
+	if err != nil {
+		return "", err
+	}
+
+	var lr loginResponse
+	dec := json.NewDecoder(resp.Body)
+	err = dec.Decode(&lr)
+	return lr.Token, err
+}
+
+func TestGame_ShouldBeCreated(t *testing.T) {
+
+	token, err := GetAuthToken()
+	assert.Nil(t, err)
 
 	c := http.Client{}
-	contentType := "application/json"
-	reqURI := fmt.Sprintf("%s/api/v1/games", API_URL)
-	resp, err := c.Post(reqURI, contentType, nil)
+	url := fmt.Sprintf("%s/api/v1/games", API_URL)
+	r, err := http.NewRequest(http.MethodPost, url, nil)
+	assert.Nil(t, err)
+	r.Header.Set("token", token)
+	r.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.Do(r)
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
 
-	b, err := ioutil.ReadAll(resp.Body)
 	assert.Nil(t, err)
+	dec := json.NewDecoder(resp.Body)
 
-	var gr GameResponse
-	assert.Nil(t, json.Unmarshal(b, &gr))
+	gr := GameResponse{}
+	err = dec.Decode(&gr)
+
+	assert.Nil(t, err)
 	assert.NotNil(t, resp)
 
 	assert.NotZero(t, len(gr.GameID))
