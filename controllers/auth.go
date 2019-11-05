@@ -2,11 +2,11 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/darahayes/go-boom"
 	"github.com/minhajuddinkhan/webrung/iorpc"
+	"github.com/minhajuddinkhan/webrung/managers/auth"
 	"github.com/minhajuddinkhan/webrung/store"
 )
 
@@ -29,20 +29,11 @@ func Authenticate(iorungrpc iorpc.Client, store store.Store) func(w http.Respons
 			boom.BadRequest(w, err)
 			return
 		}
-		player, err := store.GetPlayerByName(body.Username)
+
+		mgr := auth.NewAuthManager(iorungrpc, store)
+		token, err := mgr.Authenticate(body.Username)
 		if err != nil {
-			fmt.Println("player not found????")
-			boom.NotFound(w, "player not found")
-			return
-		}
-		fmt.Println("player??", player)
-		req := iorpc.AddPlayerRequest{
-			PlayerID: player.GetID(),
-			GameID:   "",
-		}
-		token, err := iorungrpc.AddPlayer(req)
-		if err != nil {
-			boom.Internal(w, "")
+			boom.Unathorized(w, err)
 			return
 		}
 

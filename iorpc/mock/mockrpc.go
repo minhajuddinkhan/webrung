@@ -20,7 +20,7 @@ func (mrpc *mockRPC) SetGameIDInToken(request iorpc.JoinGameRequest) (done bool,
 	return true, nil
 }
 func (mrpc *mockRPC) AddPlayer(request iorpc.AddPlayerRequest) (token string, err error) {
-	return "some-dummy-token", nil
+	return "mock.jwt.token", nil
 }
 func (mrpc *mockRPC) Authenticate(token string) (gameID, playerID string, err error) {
 	return "1", "1", nil

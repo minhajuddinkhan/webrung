@@ -1,6 +1,7 @@
 package mocks
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/minhajuddinkhan/webrung/store/models"
@@ -18,6 +19,13 @@ func (m *Store) GetPlayer(playerID string) (*models.Player, error) {
 	return &m.player, nil
 }
 
+//GetPlayerByName GetPlayerByName
 func (m *Store) GetPlayerByName(name string) (*models.Player, error) {
-	return nil, nil
+	if m.connErr {
+		return nil, fmt.Errorf("mock error from db")
+	}
+	p := &models.Player{}
+	p.SetID("1")
+	p.Name = "mockPlayer"
+	return p, nil
 }

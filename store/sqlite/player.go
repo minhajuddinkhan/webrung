@@ -32,6 +32,9 @@ func (sqlite *Store) GetPlayer(playerID string) (*models.Player, error) {
 	defer db.Close()
 	player := models.Player{}
 	if err := db.Where("id = ?", playerID).First(&player).Error; err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			return nil, &errors.ErrPlayerNotFound{}
+		}
 		//TODO:: add player not found error
 		return nil, err
 	}

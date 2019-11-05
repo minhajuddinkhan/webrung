@@ -1,8 +1,6 @@
 package sqlite
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
 	"github.com/minhajuddinkhan/webrung/errors"
 	"github.com/minhajuddinkhan/webrung/store/models"
@@ -54,9 +52,7 @@ func (sqlite *Store) IncrementPlayersJoined(gameID string) error {
 	defer db.Close()
 
 	err = db.Exec("UPDATE games SET players_joined = players_joined + 1 WHERE id = ?", gameID).Error
-	// err = db.Model(&models.Game{}).Where("id = ?", gameID).Update("").Error
 	if err != nil {
-		fmt.Println("ERRRR", err)
 		if gorm.IsRecordNotFoundError(err) {
 			return &errors.ErrGameIDNotFound{GameID: gameID}
 		}

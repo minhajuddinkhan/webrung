@@ -6,10 +6,15 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+var PORT = os.Getenv("PORT")
+var HOST = os.Getenv("HOST")
+var API_URL = fmt.Sprintf("http://%s:%s", HOST, PORT)
 
 type PlayerResponse struct {
 	ID   string `json:"id"`
@@ -57,5 +62,14 @@ func TestPlayer_CanGetWithAPI(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, pr.ID, pr.ID)
 	assert.Equal(t, pr.Name, pr.Name)
+
+}
+
+func TestPlayer_ShouldNotGetWithWrongID(t *testing.T) {
+
+	c := http.Client{}
+	resp, err := c.Get(fmt.Sprintf("%s/api/v1/players/%s", API_URL, "99999"))
+	assert.Nil(t, err)
+	assert.Equal(t, resp.StatusCode, 404)
 
 }

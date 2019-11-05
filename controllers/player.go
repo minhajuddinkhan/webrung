@@ -20,12 +20,12 @@ func GetPlayer(store store.Store) func(w http.ResponseWriter, r *http.Request) {
 		newGame, err := manager.GetPlayer(playerID)
 		if err != nil {
 			switch err.(type) {
-			case (*errors.ErrPlayerIDNotFound):
+			case (*errors.ErrPlayerNotFound):
 				boom.NotFound(w, err.Error())
 				return
 			}
 
-			w.Write([]byte(err.Error()))
+			boom.Internal(w)
 			return
 		}
 

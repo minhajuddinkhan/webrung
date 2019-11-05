@@ -38,13 +38,11 @@ func (g *gameManager) CreateGame(pl *entities.Player) (*entities.Game, error) {
 	if err != nil {
 		return nil, err
 	}
-	gID, err := strconv.Atoi(gameID)
-	if err != nil {
-		return nil, err
-	}
+	gID, _ := strconv.Atoi(gameID)
+
 	if err := g.store.JoinGame(&models.PlayersInGame{
-		GameID: uint(gID),
-		Player: player,
+		GameID:   uint(gID),
+		PlayerID: player.ID,
 	}); err != nil {
 		return nil, err
 	}
