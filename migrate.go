@@ -1,4 +1,4 @@
-package sqlite
+package webrung
 
 import (
 	"github.com/jinzhu/gorm"
@@ -6,9 +6,9 @@ import (
 )
 
 //Migrate Migrate
-func (sqlite *Store) Migrate() error {
+func Migrate(dialect, connStr string) error {
 
-	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
+	db, err := gorm.Open(dialect, connStr)
 	if err != nil {
 		return err
 	}

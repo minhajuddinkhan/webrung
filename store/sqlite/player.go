@@ -8,10 +8,15 @@ import (
 	"github.com/minhajuddinkhan/webrung/store/models"
 )
 
-//CreatePlayer CreatePlayer
-func (sqlite *Store) CreatePlayer(pl *models.Player) (string, error) {
+type playerStore struct {
+	connStr string
+	dialect string
+}
 
-	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
+//CreatePlayer CreatePlayer
+func (ps *playerStore) CreatePlayer(pl *models.Player) (string, error) {
+
+	db, err := gorm.Open(ps.dialect, ps.connStr)
 	if err != nil {
 		return "", err
 	}
@@ -24,8 +29,8 @@ func (sqlite *Store) CreatePlayer(pl *models.Player) (string, error) {
 	return strconv.FormatUint(uint64(pl.Model.ID), 10), nil
 }
 
-func (sqlite *Store) GetPlayer(playerID string) (*models.Player, error) {
-	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
+func (ps *playerStore) GetPlayer(playerID string) (*models.Player, error) {
+	db, err := gorm.Open(ps.dialect, ps.connStr)
 	if err != nil {
 		return nil, err
 	}
@@ -43,8 +48,8 @@ func (sqlite *Store) GetPlayer(playerID string) (*models.Player, error) {
 }
 
 //GetPlayerByName GetPlayerByName
-func (sqlite *Store) GetPlayerByName(name string) (*models.Player, error) {
-	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
+func (ps *playerStore) GetPlayerByName(name string) (*models.Player, error) {
+	db, err := gorm.Open(ps.dialect, ps.connStr)
 	if err != nil {
 		return nil, err
 	}

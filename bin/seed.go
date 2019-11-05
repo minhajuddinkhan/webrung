@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/minhajuddinkhan/webrung"
 	"github.com/minhajuddinkhan/webrung/errors"
 	"github.com/minhajuddinkhan/webrung/store"
 	"github.com/minhajuddinkhan/webrung/store/models"
@@ -36,12 +37,9 @@ func main() {
 	}
 	dialect := os.Getenv("DB_DIALECT")
 	dbConnString := os.Getenv("DB_URL")
-	store, err := store.NewRungStore(dialect, dbConnString)
-	if err != nil {
-		log.Fatal(err)
-	}
+	webrung.Migrate(dialect, dbConnString)
 
-	err = store.Migrate()
+	store, err := store.NewRungStore(dialect, dbConnString)
 	if err != nil {
 		log.Fatal(err)
 	}
