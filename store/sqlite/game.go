@@ -6,8 +6,13 @@ import (
 	"github.com/minhajuddinkhan/webrung/store/models"
 )
 
+type game struct {
+	dialect string
+	connStr string
+}
+
 //CreateGame CreateGame
-func (sqlite *Store) CreateGame(createdBy *models.Player) (string, error) {
+func (sqlite *game) CreateGame(createdBy *models.Player) (string, error) {
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
 		return "", err
@@ -26,7 +31,7 @@ func (sqlite *Store) CreateGame(createdBy *models.Player) (string, error) {
 }
 
 //GetGame GetGame
-func (sqlite *Store) GetGame(gameID string) (*models.Game, error) {
+func (sqlite *game) GetGame(gameID string) (*models.Game, error) {
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
 		return nil, err
@@ -43,7 +48,7 @@ func (sqlite *Store) GetGame(gameID string) (*models.Game, error) {
 	return &game, nil
 }
 
-func (sqlite *Store) IncrementPlayersJoined(gameID string) error {
+func (sqlite *game) IncrementPlayersJoined(gameID string) error {
 
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
@@ -63,7 +68,7 @@ func (sqlite *Store) IncrementPlayersJoined(gameID string) error {
 }
 
 //JoinGame JoinGame
-func (sqlite *Store) JoinGame(gameplay *models.PlayersInGame) error {
+func (sqlite *game) JoinGame(gameplay *models.PlayersInGame) error {
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
 		return err
@@ -73,7 +78,7 @@ func (sqlite *Store) JoinGame(gameplay *models.PlayersInGame) error {
 	return db.Create(gameplay).Error
 }
 
-func (sqlite *Store) IsPlayerInGame(gameID string, playerID string) (bool, error) {
+func (sqlite *game) IsPlayerInGame(gameID string, playerID string) (bool, error) {
 
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {

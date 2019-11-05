@@ -3,15 +3,15 @@ package sqlite
 import (
 	//sqlite dialect
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/minhajuddinkhan/webrung/store"
 )
 
-//Store Store
-type Store struct {
-	connStr string
-	dialect string
+//NewPlayerStore NewPlayerStore
+func NewPlayerStore(connStr string) store.Player {
+	return &playerStore{connStr: connStr, dialect: "sqlite3"}
 }
 
-//NewStore NewStore
-func NewStore(connStr string) (*Store, error) {
-	return &Store{connStr: connStr, dialect: "sqlite3"}, nil
+//NewGameStore NewGameStore
+func NewGameStore(connStr string) store.Game {
+	return &game{connStr: connStr, dialect: "sqlite3"}
 }
