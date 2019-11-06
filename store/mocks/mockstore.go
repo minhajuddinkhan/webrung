@@ -5,18 +5,23 @@ import (
 )
 
 //Store mock store
-type Store struct {
+type GameStore struct {
+	connErr bool
+	game    models.Game
+	player  models.Player
+}
+
+type PlayerStore struct {
 	connErr bool
 	game    models.Game
 	player  models.Player
 }
 
 //NewStore creates a mock store for testing
-func NewStore(connErr bool) (*Store, error) {
-	return &Store{connErr: connErr}, nil
+func NewGameStore(connErr bool) (*GameStore, error) {
+	return &GameStore{connErr: connErr}, nil
 }
 
-//Migrate Migrate
-func (ms *Store) Migrate() error {
-	return nil
+func NewPlayerStore(connErr bool) (*PlayerStore, error) {
+	return &PlayerStore{connErr: connErr}, nil
 }

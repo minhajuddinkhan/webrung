@@ -12,7 +12,7 @@ var mockGamePlayInStore []models.PlayersInGame
 var counter int
 
 //CreateGame creates a mock game with id 123
-func (ms *Store) CreateGame(createdBy *models.Player) (string, error) {
+func (ms *GameStore) CreateGame(createdBy *models.Player) (string, error) {
 	if ms.connErr {
 		return "", &errors.ErrDBConnection{ConnectionString: "mock failed connection"}
 	}
@@ -26,7 +26,7 @@ func (ms *Store) CreateGame(createdBy *models.Player) (string, error) {
 }
 
 //GetGame GetGame
-func (ms *Store) GetGame(gameID string) (*models.Game, error) {
+func (ms *GameStore) GetGame(gameID string) (*models.Game, error) {
 	if ms.connErr {
 		return nil, &errors.ErrDBConnection{ConnectionString: "mock failed connection"}
 	}
@@ -37,19 +37,19 @@ func (ms *Store) GetGame(gameID string) (*models.Game, error) {
 }
 
 //JoinGame JoinGame
-func (ms *Store) JoinGame(gameplay *models.PlayersInGame) error {
+func (ms *GameStore) JoinGame(gameplay *models.PlayersInGame) error {
 	mockGamePlayInStore = append(mockGamePlayInStore, *gameplay)
 	return nil
 }
 
 //IncrementPlayersJoined IncrementPlayersJoined
-func (ms *Store) IncrementPlayersJoined(gameID string) error {
+func (ms *GameStore) IncrementPlayersJoined(gameID string) error {
 	ms.game.PlayersJoined++
 	return nil
 }
 
 //IsPlayerInGame IsPlayerInGame
-func (ms *Store) IsPlayerInGame(gameID string, playerID string) (bool, error) {
+func (ms *GameStore) IsPlayerInGame(gameID string, playerID string) (bool, error) {
 
 	//TODO:: devise strategy.
 	return false, nil

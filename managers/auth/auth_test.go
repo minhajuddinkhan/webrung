@@ -15,7 +15,7 @@ func TestAuth_ShouldAuthenticate(t *testing.T) {
 	mockIOClient := mock.NewMockIORPCClient()
 
 	storeShouldError := false
-	store, _ := mocks.NewStore(storeShouldError)
+	store, _ := mocks.NewPlayerStore(storeShouldError)
 
 	manager := auth.NewAuthManager(mockIOClient, store)
 	token, err := manager.Authenticate("North")
@@ -29,7 +29,7 @@ func TestAuth_ShouldErrorOnBadStoreState(t *testing.T) {
 	mockIOClient := mock.NewMockIORPCClient()
 
 	storeShouldError := true
-	store, _ := mocks.NewStore(storeShouldError)
+	store, _ := mocks.NewPlayerStore(storeShouldError)
 	manager := auth.NewAuthManager(mockIOClient, store)
 	token, err := manager.Authenticate("North")
 	assert.NotNil(t, err)

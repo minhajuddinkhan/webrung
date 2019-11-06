@@ -18,7 +18,7 @@ import (
 var AuthHeader = "token"
 
 //GetGame GetGame
-func GetGame(store store.Store, c iorpc.Client) func(w http.ResponseWriter, r *http.Request) {
+func GetGame(store store.Game, c iorpc.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		gameID := mux.Vars(r)["id"]
 		gameManager := gm.NewGameManager(store, c)
@@ -44,7 +44,7 @@ func GetGame(store store.Store, c iorpc.Client) func(w http.ResponseWriter, r *h
 }
 
 //CreateGame CreateGame
-func CreateGame(store store.Store, c iorpc.Client) func(w http.ResponseWriter, r *http.Request) {
+func CreateGame(store store.Game, c iorpc.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		gameManager := gm.NewGameManager(store, c)
@@ -80,7 +80,7 @@ func CreateGame(store store.Store, c iorpc.Client) func(w http.ResponseWriter, r
 }
 
 //JoinGame JoinGame
-func JoinGame(store store.Store, iorungrpc iorpc.Client) func(w http.ResponseWriter, r *http.Request) {
+func JoinGame(store store.Game, iorungrpc iorpc.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		gameID := mux.Vars(r)["id"]

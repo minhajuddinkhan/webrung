@@ -12,7 +12,7 @@ import (
 )
 
 func beforeEach(errStore bool) gm.GameManager {
-	store, _ := mocks.NewStore(errStore)
+	store, _ := mocks.NewGameStore(errStore)
 	client := mock.NewMockIORPCClient()
 	gm := gm.NewGameManager(store, client)
 	return gm

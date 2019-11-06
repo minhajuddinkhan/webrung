@@ -11,7 +11,7 @@ import (
 )
 
 func beforeEach(errStore bool) pm.Manager {
-	store, _ := mocks.NewStore(errStore)
+	store, _ := mocks.NewPlayerStore(errStore)
 	pm := pm.NewPlayerManager(store)
 	return pm
 }

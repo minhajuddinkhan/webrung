@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/minhajuddinkhan/webrung/errors"
 	"github.com/minhajuddinkhan/webrung/store/models"
 )
@@ -9,6 +10,10 @@ import (
 type game struct {
 	dialect string
 	connStr string
+}
+
+func NewGameStore(connStr string) *game {
+	return &game{dialect: "sqlite3", connStr: connStr}
 }
 
 //CreateGame CreateGame

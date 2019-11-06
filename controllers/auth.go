@@ -19,7 +19,7 @@ type LoginResponse struct {
 }
 
 //Authenticate Authenticate
-func Authenticate(iorungrpc iorpc.Client, store store.Store) func(w http.ResponseWriter, r *http.Request) {
+func Authenticate(iorungrpc iorpc.Client, store store.Player) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		dec := json.NewDecoder(r.Body)

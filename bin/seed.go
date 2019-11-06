@@ -39,10 +39,7 @@ func main() {
 	dbConnString := os.Getenv("DB_URL")
 	webrung.Migrate(dialect, dbConnString)
 
-	store, err := store.NewRungStore(dialect, dbConnString)
-	if err != nil {
-		log.Fatal(err)
-	}
+	store := store.NewPlayerStore(dialect, dbConnString)
 
 	for _, player := range players {
 		_, err := store.GetPlayerByName(player.Name)
