@@ -18,12 +18,12 @@ type GameManager interface {
 }
 
 type gameManager struct {
-	store    store.Store
+	store    store.Game
 	ioclient iorpc.Client
 }
 
 //NewGameManager returns a new game manager.
-func NewGameManager(s store.Store, c iorpc.Client) GameManager {
+func NewGameManager(s store.Game, c iorpc.Client) GameManager {
 	return &gameManager{store: s, ioclient: c}
 }
 

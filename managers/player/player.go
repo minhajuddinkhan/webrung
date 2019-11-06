@@ -16,11 +16,11 @@ type Manager interface {
 }
 
 type playerManager struct {
-	store store.Store
+	store store.Player
 }
 
 //NewPlayerManager NewPlayerManager
-func NewPlayerManager(store store.Store) Manager {
+func NewPlayerManager(store store.Player) Manager {
 	return &playerManager{store: store}
 }
 

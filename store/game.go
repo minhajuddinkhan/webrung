@@ -24,3 +24,16 @@ type Game interface {
 
 	JoinGame(gameplay *models.PlayersInGame) error
 }
+
+//NewGameStore NewGameStore
+func NewGameStore(dialect, connStr string) (Game, error) {
+	if dialect == "sqlite3" {
+		return sqlite.NewGameStore(connStr), nil
+	}
+
+	if dialect == "mock" {
+		return mocks.NewGameStore(false)
+	}
+
+	return nil, fmt.Errorf("invalid dialect")
+}

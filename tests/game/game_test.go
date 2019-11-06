@@ -60,7 +60,10 @@ func TestGame_ShouldBeCreated(t *testing.T) {
 	resp, err := c.Do(r)
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
-
+	if err != nil {
+		t.Fail()
+		return
+	}
 	assert.Nil(t, err)
 	dec := json.NewDecoder(resp.Body)
 

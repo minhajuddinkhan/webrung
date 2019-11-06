@@ -57,25 +57,26 @@ func main() {
 		log.Fatal(err)
 	}
 
-	store, err := store.NewRungStore(conf.DB.Dialect, conf.DB.ConnectionString)
+	gameStore, err := store.NewGameStore(conf.DB.Dialect, conf.DB.ConnectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err := store.Migrate(); err != nil {
+	playerStore, err := store.NewPlayerStore(conf.DB.Dialect, conf.DB.ConnectionString)
+	if err != nil {
 		log.Fatal(err)
 	}
 
 	r := mux.NewRouter()
-	// Game REST
-	r.HandleFunc("/api/v1/games", controllers.CreateGame(store, client)).Methods("POST")
-	r.HandleFunc("/api/v1/games/{id}", controllers.GetGame(store, client)).Methods("GET")
-	r.HandleFunc("/api/v1/games/{id}/join", controllers.JoinGame(store, client)).Methods("GET")
+	// // Game REST
+	r.HandleFunc("/api/v1/games", controllers.CreateGame(gameStore, client)).Methods("POST")
+	r.HandleFunc("/api/v1/games/{id}", controllers.GetGame(gameStore, client)).Methods("GET")
+	r.HandleFunc("/api/v1/games/{id}/join", controllers.JoinGame(gameStore, client)).Methods("GET")
 
 	// Player REST
-	r.HandleFunc("/api/v1/players", controllers.CreatePlayer(store)).Methods("POST")
-	r.HandleFunc("/api/v1/players/{id}", controllers.GetPlayer(store)).Methods("GET")
+	r.HandleFunc("/api/v1/players", controllers.CreatePlayer(playerStore)).Methods("POST")
+	r.HandleFunc("/api/v1/players/{id}", controllers.GetPlayer(playerStore)).Methods("GET")
 
-	r.HandleFunc("/api/v1/auth", controllers.Authenticate(client, store)).Methods("POST")
+	r.HandleFunc("/api/v1/auth", controllers.Authenticate(client, playerStore)).Methods("POST")
 	http.Handle("/", r)
 
 	spew.Dump("LISTENING ON PORT", httpPort)

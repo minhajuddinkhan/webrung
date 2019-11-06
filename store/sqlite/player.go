@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/minhajuddinkhan/webrung/errors"
 	"github.com/minhajuddinkhan/webrung/store/models"
 )
@@ -11,6 +12,11 @@ import (
 type playerStore struct {
 	connStr string
 	dialect string
+}
+
+//NewSqlitePlayerStore NewSqlitePlayerStore
+func NewPlayerStore(connStr string) *playerStore {
+	return &playerStore{connStr: connStr, dialect: "sqlite3"}
 }
 
 //CreatePlayer CreatePlayer

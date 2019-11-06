@@ -13,7 +13,7 @@ import (
 )
 
 //GetPlayer GetPlayer
-func GetPlayer(store store.Store) func(w http.ResponseWriter, r *http.Request) {
+func GetPlayer(store store.Player) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		playerID := mux.Vars(r)["id"]
 		manager := pm.NewPlayerManager(store)
@@ -39,7 +39,7 @@ func GetPlayer(store store.Store) func(w http.ResponseWriter, r *http.Request) {
 }
 
 //CreatePlayer CreatePlayer
-func CreatePlayer(store store.Store) func(w http.ResponseWriter, r *http.Request) {
+func CreatePlayer(store store.Player) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		mgr := pm.NewPlayerManager(store)

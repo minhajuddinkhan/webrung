@@ -8,19 +8,19 @@ import (
 )
 
 //CreatePlayer CreatePlayer
-func (m *Store) CreatePlayer(p *models.Player) (string, error) {
+func (m *PlayerStore) CreatePlayer(p *models.Player) (string, error) {
 	m.player = *p
 
 	return strconv.FormatUint(uint64(m.player.ID), 10), nil
 }
 
 //GetPlayer GetPlayer
-func (m *Store) GetPlayer(playerID string) (*models.Player, error) {
+func (m *PlayerStore) GetPlayer(playerID string) (*models.Player, error) {
 	return &m.player, nil
 }
 
 //GetPlayerByName GetPlayerByName
-func (m *Store) GetPlayerByName(name string) (*models.Player, error) {
+func (m *PlayerStore) GetPlayerByName(name string) (*models.Player, error) {
 	if m.connErr {
 		return nil, fmt.Errorf("mock error from db")
 	}
