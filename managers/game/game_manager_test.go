@@ -154,3 +154,10 @@ func TestGame_ShouldThrowErrOnFiveJoins(t *testing.T) {
 	assert.NotNil(t, err)
 
 }
+
+func TestGame_ShouldStart(t *testing.T) {
+
+	// shouldErr := false
+	// mgr := beforeEach(shouldErr)
+	// mgr.StartGame()
+}
