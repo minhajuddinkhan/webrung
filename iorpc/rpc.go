@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/rpc"
 
-	"github.com/minhajuddinkhan/webrung"
+	"github.com/minhajuddinkhan/webrung/config"
 )
 
 //Client Client
@@ -16,7 +16,7 @@ type Client interface {
 }
 
 //NewIOClient client to communicate with the IORung server
-func NewIOClient(conf *webrung.Conf) (Client, error) {
+func NewIOClient(conf *config.Conf) (Client, error) {
 	return &client{
 		protocol: "tcp",
 		connStr:  fmt.Sprintf("%s:%s", conf.IORung.Host, conf.IORung.Port),

@@ -4,55 +4,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/gorilla/mux"
-	"github.com/minhajuddinkhan/webrung"
-	"github.com/minhajuddinkhan/webrung/controllers"
+	config "github.com/minhajuddinkhan/webrung/config"
 	"github.com/minhajuddinkhan/webrung/iorpc"
+	"github.com/minhajuddinkhan/webrung/router"
 	"github.com/minhajuddinkhan/webrung/store"
 	"github.com/rs/cors"
 )
 
 func main() {
 
-	httpPort := os.Getenv("PORT")
-	if httpPort == "" {
-		log.Fatal("empty http port from PORT env")
-	}
-
-	dbConnectionString := os.Getenv("DB_URL")
-	if dbConnectionString == "" {
-		log.Fatal("empty db connection string from DB_URL")
-	}
-
-	dialect := os.Getenv("DB_DIALECT")
-	if dialect == "" {
-		log.Fatal("empty db dialect from DB_DIALECT")
-	}
-
-	ioRungHost := os.Getenv("IORUNG_HOST")
-	if ioRungHost == "" {
-		log.Fatal("empty iorung host")
-	}
-
-	ioRungPort := os.Getenv("IORUNG_PORT")
-	if ioRungHost == "" {
-		log.Fatal("empty iorung port")
-	}
-
-	conf := webrung.Conf{
-		DB: webrung.DB{
-			ConnectionString: dbConnectionString,
-			Dialect:          dialect,
-		},
-		IORung: webrung.IORung{
-			Host: ioRungHost,
-			Port: ioRungPort,
-		},
-	}
-
+	conf := config.New()
 	client, err := iorpc.NewIOClient(&conf)
 	if err != nil {
 		log.Fatal(err)
@@ -67,21 +30,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	r := mux.NewRouter()
-	// // Game REST
-	r.HandleFunc("/api/v1/games", controllers.CreateGame(gameStore, client)).Methods("POST")
-	r.HandleFunc("/api/v1/games/{id}", controllers.GetGame(gameStore, client)).Methods("GET")
-	r.HandleFunc("/api/v1/games/{id}/join", controllers.JoinGame(gameStore, client)).Methods("GET")
+	r := router.New()
+	r.RegisterGameRoutes(gameStore, client)
+	r.RegisterPlayerRoutes(playerStore)
+	r.RegisterAuthRoutes(playerStore, client)
 
-	// Player REST
-	r.HandleFunc("/api/v1/players", controllers.CreatePlayer(playerStore)).Methods("POST")
-	r.HandleFunc("/api/v1/players/{id}", controllers.GetPlayer(playerStore)).Methods("GET")
-
-	r.HandleFunc("/api/v1/auth", controllers.Authenticate(client, playerStore)).Methods("POST")
-	// http.Handle("/", r)
-
-	handler := cors.Default().Handler(r)
-
-	spew.Dump("LISTENING ON PORT", httpPort)
-	http.ListenAndServe(fmt.Sprintf(":%s", httpPort), handler)
+	handler := cors.Default().Handler(r.Router())
+	spew.Dump("LISTENING ON PORT", conf.HTTPPort)
+	http.ListenAndServe(fmt.Sprintf(":%s", conf.HTTPPort), handler)
 }
