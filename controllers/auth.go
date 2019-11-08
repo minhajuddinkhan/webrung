@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/darahayes/go-boom"
+	boom "github.com/darahayes/go-boom"
 	"github.com/minhajuddinkhan/webrung/iorpc"
 	"github.com/minhajuddinkhan/webrung/managers/auth"
 	"github.com/minhajuddinkhan/webrung/store"

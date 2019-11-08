@@ -12,6 +12,7 @@ import (
 	"github.com/minhajuddinkhan/webrung/controllers"
 	"github.com/minhajuddinkhan/webrung/iorpc"
 	"github.com/minhajuddinkhan/webrung/store"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -77,8 +78,10 @@ func main() {
 	r.HandleFunc("/api/v1/players/{id}", controllers.GetPlayer(playerStore)).Methods("GET")
 
 	r.HandleFunc("/api/v1/auth", controllers.Authenticate(client, playerStore)).Methods("POST")
-	http.Handle("/", r)
+	// http.Handle("/", r)
+
+	handler := cors.Default().Handler(r)
 
 	spew.Dump("LISTENING ON PORT", httpPort)
-	http.ListenAndServe(fmt.Sprintf(":%s", httpPort), nil)
+	http.ListenAndServe(fmt.Sprintf(":%s", httpPort), handler)
 }
