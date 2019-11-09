@@ -33,8 +33,3 @@ type Card struct {
 	House  string
 	Number int
 }
-
-type DistributeCardsResponse struct {
-	Players []Player
-	GameID  string
-}
