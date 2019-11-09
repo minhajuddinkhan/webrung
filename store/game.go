@@ -18,10 +18,6 @@ type Game interface {
 	//IsPlayerInGame returns if player is joined in a game
 	IsPlayerInGame(gameID string, playerID string) (bool, error)
 
-	//IncrementPlayersJoined IncrementPlayersJoined
-	IncrementPlayersJoined(gameID string) error
-	UpdateGame(gameID string, game *models.Game) error
-
 	JoinGame(gameplay *models.PlayersInGame) error
 
 	//GetPlayersInGame gets all players that are in the game

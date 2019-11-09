@@ -142,5 +142,3 @@ func TestGame_ShouldFailToStartOnLessPlayersJoined(t *testing.T) {
 	assert.NotNil(t, err)
 
 }
-
-//TODO:: add negative test case for start game
