@@ -19,7 +19,7 @@ type GameManager interface {
 	JoinGame(player *entities.Player, game *entities.Game) error
 
 	//StartGame starts a game
-	StartGame(gameID string, startBy *entities.Player) ([]entities.Player, error)
+	StartGame(gameID string, startBy *entities.Player) (bool, error)
 }
 
 type gameManager struct {

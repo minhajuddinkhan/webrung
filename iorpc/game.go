@@ -12,14 +12,14 @@ func (c *client) SetGameIDInToken(request JoinGameRequest) (bool, error) {
 	return done, nil
 
 }
-func (c *client) StartGame(request DistributeCardsRequest) (*DistributeCardsResponse, error) {
+func (c *client) StartGame(request DistributeCardsRequest) (bool, error) {
 	client, err := c.Dial()
+	var started bool
 	if err != nil {
-		return nil, err
+		return started, err
 	}
 	defer client.Close()
-	var resp DistributeCardsResponse
-	err = client.Call("InterfaceRPC.DistributeCards", request, &resp)
+	err = client.Call("InterfaceRPC.DistributeCards", request, &started)
 
-	return &resp, err
+	return started, err
 }
