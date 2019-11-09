@@ -19,6 +19,9 @@ type GameManager interface {
 
 	//StartGame starts a game
 	StartGame(player *entities.Player, gameID string) error
+
+	//Distribute distributes cards
+	DistributeCards() error
 }
 
 type gameManager struct {
