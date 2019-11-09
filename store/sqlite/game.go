@@ -29,6 +29,7 @@ func (sqlite *Game) CreateGame(createdBy *models.Player) (string, error) {
 	defer db.Close()
 
 	game := models.Game{
+		HostID: createdBy.ID,
 		Winner: models.Player{},
 	}
 
