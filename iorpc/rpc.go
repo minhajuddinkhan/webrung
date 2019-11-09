@@ -13,7 +13,7 @@ type Client interface {
 	SetGameIDInToken(request JoinGameRequest) (done bool, err error)
 	AddPlayer(request AddPlayerRequest) (token string, err error)
 	Authenticate(token string) (gameID, playerID string, err error)
-	StartGame(request DistributeCardsRequest) (bool, error)
+	StartGame(request DistributeCardsRequest) (*DistributeCardsResponse, error)
 }
 
 //NewIOClient client to communicate with the IORung server

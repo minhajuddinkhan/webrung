@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/davecgh/go-spew/spew"
 	config "github.com/minhajuddinkhan/webrung/config"
 	"github.com/minhajuddinkhan/webrung/iorpc"
 	"github.com/minhajuddinkhan/webrung/router"
@@ -36,6 +35,6 @@ func main() {
 	r.RegisterAuthRoutes(playerStore, client)
 
 	handler := cors.Default().Handler(r.Router())
-	spew.Dump("LISTENING ON PORT", conf.HTTPPort)
+	fmt.Println("LISTENING ON PORT", conf.HTTPPort)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", conf.HTTPPort), handler))
 }

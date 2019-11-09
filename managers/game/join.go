@@ -38,8 +38,6 @@ func (g *gameManager) JoinGame(player *entities.Player, game *entities.Game) err
 	gameplay := models.PlayersInGame{
 		GameID:   gameModel.ID,
 		PlayerID: playerModel.ID,
-		Game:     *gameModel,
-		Player:   *playerModel,
 	}
 
 	return g.store.JoinGame(&gameplay)

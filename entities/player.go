@@ -9,8 +9,9 @@ import (
 
 //Player Player
 type Player struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Cards []Card
 }
 
 func (p *Player) ToModel() (*models.Player, error) {
