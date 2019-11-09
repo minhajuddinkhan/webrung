@@ -1,26 +1,27 @@
 package sqlite
 
 import (
-	"fmt"
-	"strconv"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/minhajuddinkhan/webrung/errors"
 	"github.com/minhajuddinkhan/webrung/store/models"
 )
 
-type game struct {
+type Game struct {
 	dialect string
 	connStr string
 }
 
-func NewGameStore(connStr string) *game {
-	return &game{dialect: "sqlite3", connStr: connStr}
+//NewGameStore creates new game store
+func NewGameStore(connStr string) *Game {
+	return &Game{dialect: "sqlite3", connStr: connStr}
 }
 
 //CreateGame CreateGame
-func (sqlite *game) CreateGame(createdBy *models.Player) (string, error) {
+func (sqlite *Game) CreateGame(createdBy *models.Player) (string, error) {
+	//TODO:: use this createdby to store host of the game
+	//only the host of the game should be able to start the game.
+
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
 		return "", err
@@ -38,7 +39,7 @@ func (sqlite *game) CreateGame(createdBy *models.Player) (string, error) {
 }
 
 //GetGame GetGame
-func (sqlite *game) GetGame(gameID string) (*models.Game, error) {
+func (sqlite *Game) GetGame(gameID string) (*models.Game, error) {
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
 		return nil, err
@@ -55,29 +56,8 @@ func (sqlite *game) GetGame(gameID string) (*models.Game, error) {
 	return &game, nil
 }
 
-func (sqlite *game) IncrementPlayersJoined(gameID string) error {
-
-	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	n, _ := strconv.Atoi(gameID)
-	fmt.Println()
-	err = db.Exec("UPDATE games as g SET players_joined = g.players_joined + 1 WHERE id = ?", uint(n)).Error
-	if err != nil {
-		fmt.Println(err)
-		if gorm.IsRecordNotFoundError(err) {
-			return &errors.ErrGameIDNotFound{GameID: gameID}
-		}
-		return err
-	}
-	return nil
-
-}
-
 //JoinGame JoinGame
-func (sqlite *game) JoinGame(gameplay *models.PlayersInGame) error {
+func (sqlite *Game) JoinGame(gameplay *models.PlayersInGame) error {
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
 		return err
@@ -87,7 +67,7 @@ func (sqlite *game) JoinGame(gameplay *models.PlayersInGame) error {
 	return db.Create(gameplay).Error
 }
 
-func (sqlite *game) IsPlayerInGame(gameID string, playerID string) (bool, error) {
+func (sqlite *Game) IsPlayerInGame(gameID string, playerID string) (bool, error) {
 
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
@@ -106,7 +86,7 @@ func (sqlite *game) IsPlayerInGame(gameID string, playerID string) (bool, error)
 	return true, nil
 }
 
-func (sqlite *game) GetPlayersInGame(gameID string) ([]models.PlayersInGame, error) {
+func (sqlite *Game) GetPlayersInGame(gameID string) ([]models.PlayersInGame, error) {
 
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
@@ -119,15 +99,5 @@ func (sqlite *game) GetPlayersInGame(gameID string) ([]models.PlayersInGame, err
 		return nil, err
 	}
 	return players, nil
-
-}
-
-func (sqlite *game) UpdateGame(gameID string, game *models.Game) error {
-	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	return db.Where("id = ?", gameID).Update(game).Error
 
 }

@@ -3,7 +3,6 @@ package store
 import (
 	"fmt"
 
-	"github.com/minhajuddinkhan/webrung/store/mocks"
 	"github.com/minhajuddinkhan/webrung/store/models"
 	"github.com/minhajuddinkhan/webrung/store/sqlite"
 )
@@ -25,10 +24,6 @@ func NewPlayerStore(dialect, connString string) (Player, error) {
 
 	if dialect == "sqlite3" {
 		return sqlite.NewPlayerStore(connString), nil
-	}
-
-	if dialect == "mock" {
-		return mocks.NewPlayerStore(false)
 	}
 
 	return nil, fmt.Errorf("invalid dialect provided")

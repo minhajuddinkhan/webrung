@@ -6,9 +6,10 @@ import (
 
 //Store mock store
 type GameStore struct {
-	connErr bool
-	game    models.Game
-	player  models.Player
+	connErr       bool
+	game          models.Game
+	player        models.Player
+	playersInGame []models.PlayersInGame
 }
 
 type PlayerStore struct {

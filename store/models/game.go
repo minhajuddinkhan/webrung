@@ -17,3 +17,11 @@ func (g *Game) GetID() string {
 	return strconv.Itoa(int(g.Model.ID))
 
 }
+func (g *Game) SetID(ID string) error {
+	n, err := strconv.Atoi(ID)
+	if err != nil {
+		return err
+	}
+	g.ID = uint(n)
+	return nil
+}

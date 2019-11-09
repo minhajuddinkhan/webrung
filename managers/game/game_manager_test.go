@@ -57,12 +57,12 @@ func TestGameManager_CanGetGame(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, game)
 
-	outGame, err := manager.GetGame(game.GameID)
+	outGame, err := manager.GetGame("1")
 	assert.Nil(t, err)
 	assert.NotNil(t, game)
 
-	assert.Equal(t, game.GameID, outGame.GameID)
-	assert.Equal(t, game.PlayersJoined, outGame.PlayersJoined)
+	assert.Equal(t, "1", outGame.GameID)
+	assert.Equal(t, 1, outGame.PlayersJoined)
 }
 
 func TestGameManager_ShouldErrorOnCanGetGame(t *testing.T) {
@@ -157,7 +157,45 @@ func TestGame_ShouldThrowErrOnFiveJoins(t *testing.T) {
 
 func TestGame_ShouldStart(t *testing.T) {
 
-	// shouldErr := false
-	// mgr := beforeEach(shouldErr)
-	// mgr.StartGame()
+	shouldErr := false
+	mgr := beforeEach(shouldErr)
+
+	pl := entities.Player{ID: "1"}
+	game, err := mgr.CreateGame(&pl)
+
+	gameEntity := entities.Game{GameID: game.GameID}
+
+	p2 := entities.Player{ID: "2"}
+	mgr.JoinGame(&p2, &gameEntity)
+
+	p3 := entities.Player{ID: "3"}
+	mgr.JoinGame(&p3, &gameEntity)
+
+	p4 := entities.Player{ID: "4"}
+	mgr.JoinGame(&p4, &gameEntity)
+
+	assert.Nil(t, err)
+	players, err := mgr.StartGame(game.GameID)
+	assert.Nil(t, err)
+	assert.Equal(t, 4, len(players))
+}
+
+func TestGame_ShouldFailStart(t *testing.T) {
+
+	shouldErr := false
+	mgr := beforeEach(shouldErr)
+
+	pl := entities.Player{ID: "1"}
+	game, err := mgr.CreateGame(&pl)
+
+	gameEntity := entities.Game{GameID: game.GameID}
+
+	p2 := entities.Player{ID: "2"}
+	mgr.JoinGame(&p2, &gameEntity)
+
+	p3 := entities.Player{ID: "3"}
+	mgr.JoinGame(&p3, &gameEntity)
+
+	_, err = mgr.StartGame(game.GameID)
+	assert.NotNil(t, err)
 }

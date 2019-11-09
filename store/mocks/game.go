@@ -1,18 +1,17 @@
 package mocks
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/jinzhu/gorm"
+	"github.com/minhajuddinkhan/webrung/entities"
 	"github.com/minhajuddinkhan/webrung/errors"
 	"github.com/minhajuddinkhan/webrung/store/models"
 )
 
-var mockGamePlayInStore []models.PlayersInGame
-var counter int
-
 //CreateGame creates a mock game with id 123
-func (ms *GameStore) CreateGame(createdBy *models.Player) (string, error) {
+func (ms *GameStore) CreateGame(pl *models.Player) (string, error) {
 	if ms.connErr {
 		return "", &errors.ErrDBConnection{ConnectionString: "mock failed connection"}
 	}
@@ -21,6 +20,7 @@ func (ms *GameStore) CreateGame(createdBy *models.Player) (string, error) {
 	ms.game = models.Game{
 		Model: gorm.Model{ID: uint(dummyID)},
 	}
+
 	return strconv.Itoa(dummyID), nil
 }
 
@@ -30,19 +30,20 @@ func (ms *GameStore) GetGame(gameID string) (*models.Game, error) {
 		return nil, &errors.ErrDBConnection{ConnectionString: "mock failed connection"}
 	}
 	if gameID == strconv.Itoa(int(ms.game.ID)) {
-		return &ms.game, nil
+		g := &models.Game{}
+		g.SetID(gameID)
+		return g, nil
 	}
 	return nil, &errors.ErrGameIDNotFound{}
 }
 
 //JoinGame JoinGame
 func (ms *GameStore) JoinGame(gameplay *models.PlayersInGame) error {
-	mockGamePlayInStore = append(mockGamePlayInStore, *gameplay)
-	return nil
-}
 
-//IncrementPlayersJoined IncrementPlayersJoined
-func (ms *GameStore) IncrementPlayersJoined(gameID string) error {
+	if len(ms.playersInGame) == 4 {
+		return fmt.Errorf("4 players already")
+	}
+	ms.playersInGame = append(ms.playersInGame, *gameplay)
 	return nil
 }
 
@@ -55,6 +56,10 @@ func (ms *GameStore) IsPlayerInGame(gameID string, playerID string) (bool, error
 
 func (ms *GameStore) GetPlayersInGame(gameID string) (players []models.PlayersInGame, err error) {
 
-	//TODO:: add 4 players
-	return []models.PlayersInGame{}, nil
+	return ms.playersInGame, nil
+
+}
+
+func (ms *GameStore) StartGame(gameID string) ([]entities.Player, error) {
+	return nil, nil
 }
