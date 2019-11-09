@@ -7,7 +7,16 @@ import (
 	"github.com/minhajuddinkhan/webrung/iorpc"
 )
 
-func (gm *gameManager) StartGame(gameID string) ([]entities.Player, error) {
+func (gm *gameManager) StartGame(gameID string, startBy *entities.Player) ([]entities.Player, error) {
+
+	gameToStart, err := gm.store.GetGame(gameID)
+	if err != nil {
+		return nil, err
+	}
+
+	if gameToStart.GetHostID() != startBy.ID {
+		return nil, fmt.Errorf("game cannot be started by someone other than the host")
+	}
 
 	players, err := gm.store.GetPlayersInGame(gameID)
 	if err != nil {

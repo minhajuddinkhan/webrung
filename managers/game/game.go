@@ -8,6 +8,7 @@ import (
 
 //GameManager GameManager
 type GameManager interface {
+
 	//CreateGame creates a game
 	CreateGame(player *entities.Player) (game *entities.Game, err error)
 
@@ -18,7 +19,7 @@ type GameManager interface {
 	JoinGame(player *entities.Player, game *entities.Game) error
 
 	//StartGame starts a game
-	StartGame(gameID string) ([]entities.Player, error)
+	StartGame(gameID string, startBy *entities.Player) ([]entities.Player, error)
 }
 
 type gameManager struct {
