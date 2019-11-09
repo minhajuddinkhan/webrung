@@ -28,18 +28,13 @@ func (g *gameManager) CreateGame(pl *entities.Player) (*entities.Game, error) {
 		return nil, err
 	}
 
-	updatedGame, err := g.store.GetGame(gameID)
-	if err != nil {
-		return nil, err
-	}
-
 	req := iorpc.AddPlayerRequest{PlayerID: pl.ID, GameID: gameID}
 	if _, err := g.ioclient.AddPlayer(req); err != nil {
 		return nil, err
 	}
 	return &entities.Game{
 		GameID:        gameID,
-		PlayersJoined: updatedGame.PlayersJoined,
+		PlayersJoined: 1,
 	}, nil
 
 }

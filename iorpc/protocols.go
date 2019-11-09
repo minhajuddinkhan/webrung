@@ -17,3 +17,9 @@ type AuthenticateResponse struct {
 	GameID   string
 	PlayerID string
 }
+
+//DistributeCardsRequest rpc request protocol for distributing cards in a game
+type DistributeCardsRequest struct {
+	PlayerIds []string
+	GameID    string
+}

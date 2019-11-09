@@ -1,6 +1,9 @@
 package sqlite
 
 import (
+	"fmt"
+	"strconv"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/minhajuddinkhan/webrung/errors"
@@ -25,8 +28,7 @@ func (sqlite *game) CreateGame(createdBy *models.Player) (string, error) {
 	defer db.Close()
 
 	game := models.Game{
-		PlayersJoined: 1,
-		Winner:        models.Player{},
+		Winner: models.Player{},
 	}
 
 	if err := db.Create(&game).Error; err != nil {
@@ -60,9 +62,11 @@ func (sqlite *game) IncrementPlayersJoined(gameID string) error {
 		return err
 	}
 	defer db.Close()
-
-	err = db.Exec("UPDATE games SET players_joined = players_joined + 1 WHERE id = ?", gameID).Error
+	n, _ := strconv.Atoi(gameID)
+	fmt.Println()
+	err = db.Exec("UPDATE games as g SET players_joined = g.players_joined + 1 WHERE id = ?", uint(n)).Error
 	if err != nil {
+		fmt.Println(err)
 		if gorm.IsRecordNotFoundError(err) {
 			return &errors.ErrGameIDNotFound{GameID: gameID}
 		}
@@ -100,4 +104,30 @@ func (sqlite *game) IsPlayerInGame(gameID string, playerID string) (bool, error)
 	}
 
 	return true, nil
+}
+
+func (sqlite *game) GetPlayersInGame(gameID string) ([]models.PlayersInGame, error) {
+
+	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	var players []models.PlayersInGame
+	if err := db.Where("game_id = ?", gameID).Find(&players).Error; err != nil {
+		return nil, err
+	}
+	return players, nil
+
+}
+
+func (sqlite *game) UpdateGame(gameID string, game *models.Game) error {
+	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	return db.Where("id = ?", gameID).Update(game).Error
+
 }

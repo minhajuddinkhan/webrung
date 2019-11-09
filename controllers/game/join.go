@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/darahayes/go-boom"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gorilla/mux"
 	"github.com/minhajuddinkhan/webrung/entities"
 	"github.com/minhajuddinkhan/webrung/iorpc"
@@ -13,6 +14,7 @@ import (
 func (ctrl *controller) JoinGame(w http.ResponseWriter, r *http.Request) {
 
 	gameID := mux.Vars(r)["id"]
+	spew.Dump("GameID?", gameID)
 	if gameID == "" {
 		boom.BadRequest(w, "empty game id")
 		return

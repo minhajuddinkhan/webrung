@@ -18,12 +18,12 @@ func (g *gameManager) JoinGame(player *entities.Player, game *entities.Game) err
 		return err
 	}
 
-	currentGame, err := g.store.GetGame(game.GameID)
+	players, err := g.store.GetPlayersInGame(game.GameID)
 	if err != nil {
 		return err
 	}
 
-	if currentGame.PlayersJoined == 4 {
+	if len(players) == 4 {
 		return fmt.Errorf("already four players joined")
 	}
 
@@ -36,13 +36,12 @@ func (g *gameManager) JoinGame(player *entities.Player, game *entities.Game) err
 	}
 
 	gameplay := models.PlayersInGame{
-		Game:   *gameModel,
-		Player: *playerModel,
+		GameID:   gameModel.ID,
+		PlayerID: playerModel.ID,
+		Game:     *gameModel,
+		Player:   *playerModel,
 	}
 
-	if err := g.store.JoinGame(&gameplay); err != nil {
-		return err
-	}
+	return g.store.JoinGame(&gameplay)
 
-	return g.store.IncrementPlayersJoined(game.GameID)
 }

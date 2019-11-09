@@ -8,8 +8,8 @@ import (
 
 type Game struct {
 	gorm.Model
-	Winner        Player
-	PlayersJoined int
+	Winner   Player
+	WinnerID int
 }
 
 //GetID gets id in string

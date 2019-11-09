@@ -19,8 +19,7 @@ func (ms *GameStore) CreateGame(createdBy *models.Player) (string, error) {
 
 	dummyID := 1
 	ms.game = models.Game{
-		PlayersJoined: 1,
-		Model:         gorm.Model{ID: uint(dummyID)},
+		Model: gorm.Model{ID: uint(dummyID)},
 	}
 	return strconv.Itoa(dummyID), nil
 }
@@ -44,7 +43,6 @@ func (ms *GameStore) JoinGame(gameplay *models.PlayersInGame) error {
 
 //IncrementPlayersJoined IncrementPlayersJoined
 func (ms *GameStore) IncrementPlayersJoined(gameID string) error {
-	ms.game.PlayersJoined++
 	return nil
 }
 
@@ -53,4 +51,10 @@ func (ms *GameStore) IsPlayerInGame(gameID string, playerID string) (bool, error
 
 	//TODO:: devise strategy.
 	return false, nil
+}
+
+func (ms *GameStore) GetPlayersInGame(gameID string) (players []models.PlayersInGame, err error) {
+
+	//TODO:: add 4 players
+	return []models.PlayersInGame{}, nil
 }

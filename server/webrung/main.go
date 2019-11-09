@@ -37,5 +37,5 @@ func main() {
 
 	handler := cors.Default().Handler(r.Router())
 	spew.Dump("LISTENING ON PORT", conf.HTTPPort)
-	http.ListenAndServe(fmt.Sprintf(":%s", conf.HTTPPort), handler)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", conf.HTTPPort), handler))
 }

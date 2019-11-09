@@ -3,7 +3,6 @@ package store
 import (
 	"fmt"
 
-	"github.com/minhajuddinkhan/webrung/store/mocks"
 	"github.com/minhajuddinkhan/webrung/store/models"
 	"github.com/minhajuddinkhan/webrung/store/sqlite"
 )
@@ -21,8 +20,12 @@ type Game interface {
 
 	//IncrementPlayersJoined IncrementPlayersJoined
 	IncrementPlayersJoined(gameID string) error
+	UpdateGame(gameID string, game *models.Game) error
 
 	JoinGame(gameplay *models.PlayersInGame) error
+
+	//GetPlayersInGame gets all players that are in the game
+	GetPlayersInGame(gameID string) (players []models.PlayersInGame, err error)
 }
 
 //NewGameStore NewGameStore
@@ -31,9 +34,9 @@ func NewGameStore(dialect, connStr string) (Game, error) {
 		return sqlite.NewGameStore(connStr), nil
 	}
 
-	if dialect == "mock" {
-		return mocks.NewGameStore(false)
-	}
+	// if dialect == "mock" {
+	// 	return mocks.NewGameStore(false)
+	// }
 
 	return nil, fmt.Errorf("invalid dialect")
 }

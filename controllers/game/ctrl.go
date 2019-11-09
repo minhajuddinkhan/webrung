@@ -12,6 +12,7 @@ type Controller interface {
 	CreateGame(w http.ResponseWriter, r *http.Request)
 	JoinGame(w http.ResponseWriter, r *http.Request)
 	GetGame(w http.ResponseWriter, r *http.Request)
+	StartGame(w http.ResponseWriter, r *http.Request)
 }
 
 type controller struct {

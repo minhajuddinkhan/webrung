@@ -1,6 +1,10 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"strconv"
+
+	"github.com/jinzhu/gorm"
+)
 
 //PlayersInGame PlayersInGame
 type PlayersInGame struct {
@@ -9,4 +13,9 @@ type PlayersInGame struct {
 	Game     Game
 	PlayerID uint
 	Player   Player
+}
+
+//GetPlayerID GetPlayerID
+func (pg *PlayersInGame) GetPlayerID() string {
+	return strconv.Itoa(int(pg.PlayerID))
 }

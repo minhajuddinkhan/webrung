@@ -18,10 +18,7 @@ type GameManager interface {
 	JoinGame(player *entities.Player, game *entities.Game) error
 
 	//StartGame starts a game
-	StartGame(player *entities.Player, gameID string) error
-
-	//Distribute distributes cards
-	DistributeCards() error
+	StartGame(gameID string) error
 }
 
 type gameManager struct {
