@@ -9,7 +9,6 @@ import (
 	"github.com/minhajuddinkhan/webrung/iorpc"
 	"github.com/minhajuddinkhan/webrung/router"
 	"github.com/minhajuddinkhan/webrung/store"
-	"github.com/rs/cors"
 )
 
 func main() {
@@ -34,7 +33,6 @@ func main() {
 	r.RegisterPlayerRoutes(playerStore)
 	r.RegisterAuthRoutes(playerStore, client)
 
-	handler := cors.Default().Handler(r.Router())
 	fmt.Println("LISTENING ON PORT", conf.HTTPPort)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", conf.HTTPPort), handler))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", conf.HTTPPort), r.Handler()))
 }

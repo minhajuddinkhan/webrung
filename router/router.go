@@ -1,9 +1,12 @@
 package router
 
 import (
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/minhajuddinkhan/webrung/iorpc"
 	"github.com/minhajuddinkhan/webrung/store"
+	"github.com/rs/cors"
 )
 
 //Mux mux router
@@ -12,17 +15,27 @@ type Mux interface {
 	RegisterGameRoutes(store.Game, iorpc.Client)
 	RegisterPlayerRoutes(store.Player)
 	RegisterAuthRoutes(store.Player, iorpc.Client)
+	Handler() http.Handler
 }
 
 type router struct {
-	router *mux.Router
+	router  *mux.Router
+	handler http.Handler
 }
 
 //New creates a new router
 func New() Mux {
-	return &router{router: mux.NewRouter()}
+
+	r := mux.NewRouter()
+
+	handler := cors.AllowAll().Handler(r)
+	return &router{router: r, handler: handler}
 }
 
 func (r *router) Router() *mux.Router {
 	return r.router
+}
+
+func (r *router) Handler() http.Handler {
+	return r.handler
 }
