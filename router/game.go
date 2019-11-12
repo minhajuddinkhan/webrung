@@ -11,6 +11,7 @@ func (r *router) RegisterGameRoutes(gameStore store.Game, client iorpc.Client) {
 	gameCtrl := game.NewGameCtrl(gameStore, client)
 
 	//Game REST
+	r.router.HandleFunc("/api/v1/games", gameCtrl.GetAllGames).Methods("GET")
 	r.router.HandleFunc("/api/v1/games/{id}", gameCtrl.GetGame).Methods("GET")
 	r.router.HandleFunc("/api/v1/games/{id}/join", gameCtrl.JoinGame).Methods("GET")
 	r.router.HandleFunc("/api/v1/games/{id}/start", gameCtrl.StartGame).Methods("GET")

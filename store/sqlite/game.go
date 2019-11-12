@@ -17,6 +17,38 @@ func NewGameStore(connStr string) *Game {
 	return &Game{dialect: "sqlite3", connStr: connStr}
 }
 
+func (sqlite *Game) GetJoinableGames() ([]models.JoinableGame, error) {
+
+	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	rows, err := db.Table("players_in_games").Select("game_id, COUNT(*)").Group("game_id").Having("count(*) < 4").Rows()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var gameID string
+	var playersJoined int
+	var joinableGames []models.JoinableGame
+	for rows.Next() {
+		err := rows.Scan(&gameID, &playersJoined)
+		if err != nil {
+			return nil, err
+		}
+		joinableGames = append(joinableGames, models.JoinableGame{
+			GameID:        gameID,
+			PlayersJoined: playersJoined,
+		})
+	}
+
+	return joinableGames, nil
+
+}
+
 //CreateGame CreateGame
 func (sqlite *Game) CreateGame(createdBy *models.Player) (string, error) {
 	//TODO:: use this createdby to store host of the game

@@ -22,3 +22,18 @@ func (g *gameManager) GetGame(gameID string) (*entities.Game, error) {
 	}, nil
 
 }
+
+func (g *gameManager) GetJoinableGames() ([]entities.Game, error) {
+
+	joinableGames, err := g.store.GetJoinableGames()
+	if err != nil {
+		return nil, err
+	}
+
+	games := make([]entities.Game, len(joinableGames))
+	for j, game := range joinableGames {
+		games[j].GameID = game.GameID
+		games[j].PlayersJoined = game.PlayersJoined
+	}
+	return games, nil
+}

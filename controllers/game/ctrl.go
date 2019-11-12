@@ -13,6 +13,7 @@ type Controller interface {
 	JoinGame(w http.ResponseWriter, r *http.Request)
 	GetGame(w http.ResponseWriter, r *http.Request)
 	StartGame(w http.ResponseWriter, r *http.Request)
+	GetAllGames(w http.ResponseWriter, r *http.Request)
 }
 
 type controller struct {

@@ -10,6 +10,23 @@ import (
 	gm "github.com/minhajuddinkhan/webrung/managers/game"
 )
 
+func (ctrl *controller) GetAllGames(w http.ResponseWriter, r *http.Request) {
+
+	gameManager := gm.NewGameManager(ctrl.gameStore, ctrl.ioclient)
+	games, err := gameManager.GetJoinableGames()
+	if err != nil {
+		boom.BadRequest(w, err)
+		return
+	}
+
+	w.Header().Set("content-type", "application/json")
+	enc := json.NewEncoder(w)
+	if err := enc.Encode(&games); err != nil {
+		boom.BadRequest(w, err)
+		return
+	}
+}
+
 func (ctrl *controller) GetGame(w http.ResponseWriter, r *http.Request) {
 	gameID := mux.Vars(r)["id"]
 	gameManager := gm.NewGameManager(ctrl.gameStore, ctrl.ioclient)
