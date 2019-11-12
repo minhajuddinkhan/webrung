@@ -22,6 +22,9 @@ type Game interface {
 
 	//GetPlayersInGame gets all players that are in the game
 	GetPlayersInGame(gameID string) (players []models.PlayersInGame, err error)
+
+	//GetJoinableGames gets joinable games. i.e players with less than all 4 players joined.
+	GetJoinableGames() ([]models.JoinableGame, error)
 }
 
 //NewGameStore NewGameStore

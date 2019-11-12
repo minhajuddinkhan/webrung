@@ -8,6 +8,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/minhajuddinkhan/webrung/entities"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -79,4 +80,29 @@ func TestGame_ShouldGetByID(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, gr.GameID, getGameResponse.GameID)
+}
+
+func TestGame_ShouldGetJoinableGames(t *testing.T) {
+
+	token, err := GetAuthToken("North")
+	assert.Nil(t, err)
+
+	c := http.Client{}
+	url := fmt.Sprintf("%s/api/v1/games", API_URL)
+	r, err := http.NewRequest(http.MethodGet, url, nil)
+	assert.Nil(t, err)
+	r.Header.Set("token", token)
+	r.Header.Set("Content-Type", "application/json")
+	resp, err := c.Get(url)
+	assert.Nil(t, err)
+
+	dec := json.NewDecoder(resp.Body)
+	var getGameResponse []entities.Game
+	err = dec.Decode(&getGameResponse)
+	assert.Nil(t, err)
+	assert.NotNil(t, resp)
+
+	for _, g := range getGameResponse {
+		assert.Less(t, g.PlayersJoined, 4)
+	}
 }
