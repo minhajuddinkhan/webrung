@@ -25,23 +25,29 @@ func (sqlite *Game) GetJoinableGames() ([]models.JoinableGame, error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Table("players_in_games").Select("game_id, COUNT(*)").Group("game_id").Having("count(*) < 4").Rows()
+	rows, err := db.
+		Table("players_in_games").
+		Select("game_id, COUNT(*), player_id").
+		Group("game_id").
+		Having("count(*) < 4").Rows()
+
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var gameID string
+	var gameID, playerID string
 	var playersJoined int
 	var joinableGames []models.JoinableGame
 	for rows.Next() {
-		err := rows.Scan(&gameID, &playersJoined)
+		err := rows.Scan(&gameID, &playersJoined, &playerID)
 		if err != nil {
 			return nil, err
 		}
 		joinableGames = append(joinableGames, models.JoinableGame{
 			GameID:        gameID,
 			PlayersJoined: playersJoined,
+			PlayerID:      playerID,
 		})
 	}
 

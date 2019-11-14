@@ -12,8 +12,14 @@ import (
 
 func (ctrl *controller) GetAllGames(w http.ResponseWriter, r *http.Request) {
 
+	_, playerID, err := ctrl.ioclient.Authenticate(r.Header.Get(AuthHeader))
+	if err != nil {
+		boom.Unathorized(w, err)
+		return
+	}
+
 	gameManager := gm.NewGameManager(ctrl.gameStore, ctrl.ioclient)
-	games, err := gameManager.GetJoinableGames()
+	games, err := gameManager.GetJoinableGames(playerID)
 	if err != nil {
 		boom.BadRequest(w, err)
 		return
