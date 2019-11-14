@@ -23,17 +23,23 @@ func (g *gameManager) GetGame(gameID string) (*entities.Game, error) {
 
 }
 
-func (g *gameManager) GetJoinableGames() ([]entities.Game, error) {
+func (g *gameManager) GetJoinableGames(requestedByPlayerID string) ([]entities.Game, error) {
 
 	joinableGames, err := g.store.GetJoinableGames()
 	if err != nil {
 		return nil, err
 	}
 
-	games := make([]entities.Game, len(joinableGames))
-	for j, game := range joinableGames {
-		games[j].GameID = game.GameID
-		games[j].PlayersJoined = game.PlayersJoined
+	games := []entities.Game{}
+	for _, game := range joinableGames {
+		// cant view a game which a player has already joined.
+		if game.PlayerID == requestedByPlayerID {
+			continue
+		}
+		games = append(games, entities.Game{
+			GameID:        game.GameID,
+			PlayersJoined: game.PlayersJoined,
+		})
 	}
 	return games, nil
 }

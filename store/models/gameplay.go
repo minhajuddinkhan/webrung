@@ -25,4 +25,5 @@ func (pg *PlayersInGame) GetPlayerID() string {
 type JoinableGame struct {
 	GameID        string
 	PlayersJoined int
+	PlayerID      string
 }
