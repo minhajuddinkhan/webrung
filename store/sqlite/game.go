@@ -106,7 +106,7 @@ func (sqlite *Game) JoinGame(gameplay *models.PlayersInGame) error {
 	return db.Create(gameplay).Error
 }
 
-func (sqlite *Game) IsPlayerInGame(gameID string, playerID string) (bool, error) {
+func (sqlite *Game) IsPlayerInGame(playerID string) (bool, error) {
 
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
@@ -114,7 +114,7 @@ func (sqlite *Game) IsPlayerInGame(gameID string, playerID string) (bool, error)
 	}
 	defer db.Close()
 	var playerInGame models.PlayersInGame
-	err = db.Where("game_id = ? AND player_id = ?", gameID, playerID).First(&playerInGame).Error
+	err = db.Where("player_id = ?", playerID).First(&playerInGame).Error
 	if err != nil {
 		if gorm.IsRecordNotFoundError(err) {
 			return false, nil
