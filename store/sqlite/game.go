@@ -140,3 +140,20 @@ func (sqlite *Game) GetPlayersInGame(gameID string) ([]models.PlayersInGame, err
 	return players, nil
 
 }
+
+func (sqlite *Game) GetGameByHost(hostID string) (*models.Game, error) {
+
+	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	var game models.Game
+	if err := db.Where("host_id = ?", hostID).First(&game).Error; err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			return nil, &errors.ErrGameIDNotFound{}
+		}
+		return nil, err
+	}
+	return &game, nil
+}

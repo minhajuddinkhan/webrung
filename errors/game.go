@@ -19,3 +19,15 @@ type ErrFailCreateGameInDb struct {
 func (e *ErrFailCreateGameInDb) Error() string {
 	return e.Err.Error()
 }
+
+//ErrGameAlreadyHosted ErrGameAlreadyHosted
+type ErrGameAlreadyHosted struct {
+	Err error
+}
+
+func (e *ErrGameAlreadyHosted) Error() string {
+	if e.Err == nil {
+		return fmt.Sprintf("game already hosted")
+	}
+	return e.Err.Error()
+}

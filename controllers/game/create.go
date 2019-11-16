@@ -22,6 +22,7 @@ func (ctrl *controller) CreateGame(w http.ResponseWriter, r *http.Request) {
 		boom.Unathorized(w, err)
 		return
 	}
+
 	newGame, err := gameManager.CreateGame(&entities.Player{
 		ID: playerID,
 	})
@@ -30,6 +31,9 @@ func (ctrl *controller) CreateGame(w http.ResponseWriter, r *http.Request) {
 
 		case (*errors.ErrFailCreateGameInDb):
 			boom.Internal(w)
+			return
+		case (*errors.ErrGameAlreadyHosted):
+			boom.BadRequest(w, err)
 			return
 		}
 		boom.Internal(w)
