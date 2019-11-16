@@ -21,6 +21,7 @@ type GameManager interface {
 	//StartGame starts a game
 	StartGame(gameID string, startBy *entities.Player) (bool, error)
 
+	//GetJoinableGames get joinable games
 	GetJoinableGames(requestedByPlayerID string) (games []entities.Game, err error)
 }
 

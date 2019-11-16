@@ -14,7 +14,8 @@ type Mux interface {
 	Router() *mux.Router
 	RegisterGameRoutes(store.Game, iorpc.Client)
 	RegisterPlayerRoutes(store.Player)
-	RegisterAuthRoutes(store.Player, iorpc.Client)
+	RegisterAuthRoutes(store.Player, store.Game, iorpc.Client)
+	RegisterMeRoutes(playerStore store.Player, gameStore store.Game, ioclient iorpc.Client)
 	Handler() http.Handler
 }
 

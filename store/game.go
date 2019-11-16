@@ -29,6 +29,9 @@ type Game interface {
 
 	//GetGameByHost get game by host
 	GetGameByHost(hostID string) (*models.Game, error)
+
+	//GetGameByPlayer gets game assosciated by player
+	GetGameByPlayer(playerID string) (*models.Game, error)
 }
 
 //NewGameStore NewGameStore

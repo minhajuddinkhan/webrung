@@ -14,10 +14,11 @@ type Controller interface {
 
 type controller struct {
 	playerStore store.Player
+	gameStore   store.Game
 	ioclient    iorpc.Client
 }
 
 //NewAuthController NewAuthController
-func NewAuthController(store store.Player, iorungrpc iorpc.Client) Controller {
-	return &controller{playerStore: store, ioclient: iorungrpc}
+func NewAuthController(store store.Player, gameStore store.Game, iorungrpc iorpc.Client) Controller {
+	return &controller{playerStore: store, ioclient: iorungrpc, gameStore: gameStore}
 }

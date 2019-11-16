@@ -19,6 +19,7 @@ func (g *gameManager) GetGame(gameID string) (*entities.Game, error) {
 	return &entities.Game{
 		GameID:        game.GetID(),
 		PlayersJoined: len(players),
+		HostID:        game.GetHostID(),
 	}, nil
 
 }

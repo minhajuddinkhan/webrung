@@ -27,9 +27,10 @@ func (ctrl *controller) Authenticate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	mgr := auth.NewAuthManager(ctrl.ioclient, ctrl.playerStore)
+	mgr := auth.NewAuthManager(ctrl.ioclient, ctrl.playerStore, ctrl.gameStore)
 	token, err := mgr.Authenticate(body.Username)
 	if err != nil {
+
 		boom.Unathorized(w, err)
 		return
 	}

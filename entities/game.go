@@ -11,6 +11,7 @@ import (
 type Game struct {
 	GameID        string `json:"game_id"`
 	PlayersJoined int    `json:"players_joined,omitempty"`
+	HostID        string `json:"host_id"`
 }
 
 //Marshal Marshal
