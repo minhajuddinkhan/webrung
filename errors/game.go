@@ -31,3 +31,15 @@ func (e *ErrGameAlreadyHosted) Error() string {
 	}
 	return e.Err.Error()
 }
+
+//ErrPlayerAlreadyJoinedInAnotherGame ErrPlayerAlreadyJoinedInAnotherGame
+type ErrPlayerAlreadyJoinedInAnotherGame struct {
+	Err error
+}
+
+func (e *ErrPlayerAlreadyJoinedInAnotherGame) Error() string {
+	if e.Err == nil {
+		return fmt.Sprintf("cannot create new game while you are already joined in another game")
+	}
+	return e.Err.Error()
+}

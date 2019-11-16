@@ -27,7 +27,7 @@ func (g *gameManager) JoinGame(player *entities.Player, game *entities.Game) err
 		return fmt.Errorf("already four players joined")
 	}
 
-	present, err := g.store.IsPlayerInGame(game.GameID, player.ID)
+	present, err := g.store.IsPlayerInGame(player.ID)
 	if err != nil {
 		return err
 	}

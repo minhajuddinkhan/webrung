@@ -35,9 +35,13 @@ func (ctrl *controller) CreateGame(w http.ResponseWriter, r *http.Request) {
 		case (*errors.ErrGameAlreadyHosted):
 			boom.BadRequest(w, err)
 			return
+		case (*errors.ErrPlayerAlreadyJoinedInAnotherGame):
+			boom.BadRequest(w, err)
+			return
+		default:
+			boom.Internal(w)
+			return
 		}
-		boom.Internal(w)
-		return
 	}
 
 	w.Header().Set("content-type", "application/json")

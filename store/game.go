@@ -16,8 +16,9 @@ type Game interface {
 	GetGame(gameID string) (*models.Game, error)
 
 	//IsPlayerInGame returns if player is joined in a game
-	IsPlayerInGame(gameID string, playerID string) (bool, error)
+	IsPlayerInGame(playerID string) (bool, error)
 
+	//JoinGame joins a game
 	JoinGame(gameplay *models.PlayersInGame) error
 
 	//GetPlayersInGame gets all players that are in the game
