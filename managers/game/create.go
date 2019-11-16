@@ -1,14 +1,34 @@
 package game
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/minhajuddinkhan/webrung/entities"
+	"github.com/minhajuddinkhan/webrung/errors"
 	"github.com/minhajuddinkhan/webrung/iorpc"
 	"github.com/minhajuddinkhan/webrung/store/models"
 )
 
 func (g *gameManager) CreateGame(pl *entities.Player) (*entities.Game, error) {
+
+	_, err := g.store.GetGameByHost(pl.ID)
+	var gameAlreadyHosted bool
+	if err != nil {
+		switch err.(type) {
+		case (*errors.ErrGameIDNotFound):
+			gameAlreadyHosted = false
+
+		default:
+			return nil, err
+		}
+
+	}
+	if gameAlreadyHosted || err == nil {
+		return nil, &errors.ErrGameAlreadyHosted{
+			Err: fmt.Errorf("game already hosted by player %s", pl.ID),
+		}
+	}
 
 	player := models.Player{Name: pl.Name}
 	if err := player.SetID(pl.ID); err != nil {

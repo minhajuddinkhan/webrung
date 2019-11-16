@@ -25,6 +25,9 @@ type Game interface {
 
 	//GetJoinableGames gets joinable games. i.e players with less than all 4 players joined.
 	GetJoinableGames() ([]models.JoinableGame, error)
+
+	//GetGameByHost get game by host
+	GetGameByHost(hostID string) (*models.Game, error)
 }
 
 //NewGameStore NewGameStore
