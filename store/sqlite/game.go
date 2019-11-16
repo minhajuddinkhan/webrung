@@ -1,6 +1,7 @@
 package sqlite
 
 import (
+	"github.com/davecgh/go-spew/spew"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/minhajuddinkhan/webrung/errors"
@@ -156,4 +157,39 @@ func (sqlite *Game) GetGameByHost(hostID string) (*models.Game, error) {
 		return nil, err
 	}
 	return &game, nil
+}
+
+//GetGameByPlayer GetGameByPlayer
+func (sqlite *Game) GetGameByPlayer(playerID string) (*models.Game, error) {
+
+	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	rows, err := db.Table("players_in_games").
+		Select("games.id, games.host_id").
+		Joins("LEFT JOIN games  ON games.id = players_in_games.game_id").
+		Where("players_in_games.player_id = ?", playerID).
+		Rows()
+
+	if err != nil {
+		spew.Dump(err)
+		return nil, err
+	}
+
+	var gameID, hostID uint
+	for rows.Next() {
+		if err := rows.Scan(&gameID, &hostID); err != nil {
+			return nil, err
+		}
+	}
+
+	return &models.Game{
+		Model: gorm.Model{
+			ID: gameID,
+		},
+		HostID: hostID,
+	}, nil
 }

@@ -12,6 +12,7 @@ type Player struct {
 	Name     string
 	Cards    []Card
 	HandsWon int
+	ImageURL string
 }
 
 func (p *Player) SetID(ID string) error {

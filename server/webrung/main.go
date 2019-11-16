@@ -14,7 +14,7 @@ import (
 func main() {
 
 	conf := config.New()
-	client, err := iorpc.NewIOClient(&conf)
+	ioclient, err := iorpc.NewIOClient(&conf)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -29,9 +29,10 @@ func main() {
 	}
 
 	r := router.New()
-	r.RegisterGameRoutes(gameStore, client)
+	r.RegisterGameRoutes(gameStore, ioclient)
 	r.RegisterPlayerRoutes(playerStore)
-	r.RegisterAuthRoutes(playerStore, client)
+	r.RegisterAuthRoutes(playerStore, gameStore, ioclient)
+	r.RegisterMeRoutes(playerStore, gameStore, ioclient)
 
 	fmt.Println("LISTENING ON PORT", conf.HTTPPort)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", conf.HTTPPort), r.Handler()))

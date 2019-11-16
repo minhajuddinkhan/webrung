@@ -12,11 +12,12 @@ type Manager interface {
 }
 
 type manager struct {
-	ioclient iorpc.Client
-	store    store.Player
+	ioclient    iorpc.Client
+	playerStore store.Player
+	gameStore   store.Game
 }
 
 //NewAuthManager returns new auth manager
-func NewAuthManager(iorungrpc iorpc.Client, store store.Player) Manager {
-	return &manager{ioclient: iorungrpc, store: store}
+func NewAuthManager(iorungrpc iorpc.Client, playerStore store.Player, gameStore store.Game) Manager {
+	return &manager{ioclient: iorungrpc, playerStore: playerStore, gameStore: gameStore}
 }
