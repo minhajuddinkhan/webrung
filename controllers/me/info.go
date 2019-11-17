@@ -2,7 +2,6 @@ package me
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/darahayes/go-boom"
@@ -19,7 +18,6 @@ func (ctrl *Controller) Info(w http.ResponseWriter, r *http.Request) {
 		boom.Unathorized(w, err)
 		return
 	}
-	fmt.Println(gameID, playerID)
 
 	playerMgr := pm.NewPlayerManager(ctrl.playerStore)
 	player, err := playerMgr.GetPlayer(playerID)

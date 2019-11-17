@@ -10,5 +10,5 @@ func (r *router) RegisterAuthRoutes(playerStore store.Player, gameStore store.Ga
 	ctrl := auth.NewAuthController(playerStore, gameStore, ioclient)
 
 	//Auth
-	r.router.HandleFunc("/api/v1/auth", ctrl.Authenticate).Methods("POST")
+	r.router.HandleFunc("/api/v1/auth", ctrl.Login).Methods("POST")
 }

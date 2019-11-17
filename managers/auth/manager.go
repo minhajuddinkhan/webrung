@@ -8,7 +8,7 @@ import (
 //Manager manages authentication
 type Manager interface {
 	//Authenticate authenticates a player
-	Authenticate(username string) (token string, err error)
+	Login(username string) (token string, err error)
 }
 
 type manager struct {
