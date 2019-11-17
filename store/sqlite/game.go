@@ -37,7 +37,7 @@ func (sqlite *Game) GetJoinableGames() ([]models.JoinableGame, error) {
 	}
 	defer rows.Close()
 
-	var gameID, playerID string
+	var gameID, playerID uint
 	var playersJoined int
 	var joinableGames []models.JoinableGame
 	for rows.Next() {
@@ -57,13 +57,13 @@ func (sqlite *Game) GetJoinableGames() ([]models.JoinableGame, error) {
 }
 
 //CreateGame CreateGame
-func (sqlite *Game) CreateGame(createdBy *models.Player) (string, error) {
+func (sqlite *Game) CreateGame(createdBy *models.Player) (uint, error) {
 	//TODO:: use this createdby to store host of the game
 	//only the host of the game should be able to start the game.
 
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 	defer db.Close()
 
@@ -73,13 +73,13 @@ func (sqlite *Game) CreateGame(createdBy *models.Player) (string, error) {
 	}
 
 	if err := db.Create(&game).Error; err != nil {
-		return "", err
+		return 0, err
 	}
-	return game.GetID(), nil
+	return game.ID, nil
 }
 
 //GetGame GetGame
-func (sqlite *Game) GetGame(gameID string) (*models.Game, error) {
+func (sqlite *Game) GetGame(gameID uint) (*models.Game, error) {
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
 		return nil, err
@@ -107,7 +107,7 @@ func (sqlite *Game) JoinGame(gameplay *models.PlayersInGame) error {
 	return db.Create(gameplay).Error
 }
 
-func (sqlite *Game) IsPlayerInGame(playerID string) (bool, error) {
+func (sqlite *Game) IsPlayerInGame(playerID uint) (bool, error) {
 
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
@@ -126,7 +126,7 @@ func (sqlite *Game) IsPlayerInGame(playerID string) (bool, error) {
 	return true, nil
 }
 
-func (sqlite *Game) GetPlayersInGame(gameID string) ([]models.PlayersInGame, error) {
+func (sqlite *Game) GetPlayersInGame(gameID uint) ([]models.PlayersInGame, error) {
 
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
@@ -142,7 +142,7 @@ func (sqlite *Game) GetPlayersInGame(gameID string) ([]models.PlayersInGame, err
 
 }
 
-func (sqlite *Game) GetGameByHost(hostID string) (*models.Game, error) {
+func (sqlite *Game) GetGameByHost(hostID uint) (*models.Game, error) {
 
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {
@@ -160,7 +160,7 @@ func (sqlite *Game) GetGameByHost(hostID string) (*models.Game, error) {
 }
 
 //GetGameByPlayer GetGameByPlayer
-func (sqlite *Game) GetGameByPlayer(playerID string) (*models.Game, error) {
+func (sqlite *Game) GetGameByPlayer(playerID uint) (*models.Game, error) {
 
 	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
 	if err != nil {

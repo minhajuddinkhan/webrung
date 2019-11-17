@@ -1,10 +1,10 @@
 package iorpc
 
-func (c *client) Authenticate(token string) (gameID, playerID string, err error) {
+func (c *client) Authenticate(token string) (gameID, playerID uint, err error) {
 
 	client, err := c.Dial()
 	if err != nil {
-		return "", "", err
+		return 0, 0, err
 	}
 	defer client.Close()
 	var authResponse AuthenticateResponse

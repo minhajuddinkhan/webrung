@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"github.com/davecgh/go-spew/spew"
 	"github.com/minhajuddinkhan/webrung/iorpc"
 )
 
@@ -10,15 +11,16 @@ func (m *manager) Login(username string) (token string, err error) {
 		return "", err
 	}
 
-	game, err := m.gameStore.GetGameByPlayer(player.GetID())
+	game, err := m.gameStore.GetGameByPlayer(player.ID)
 	if err != nil {
 		return "", err
 	}
 
 	req := iorpc.AddPlayerRequest{
-		PlayerID: player.GetID(),
-		GameID:   game.GetID(),
+		PlayerID: player.ID,
+		GameID:   game.ID,
 	}
+	spew.Dump(req)
 	return m.ioclient.AddPlayer(req)
 
 }

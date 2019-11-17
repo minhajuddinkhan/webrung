@@ -12,7 +12,7 @@ type Manager interface {
 	CreatePlayer(player *entities.Player) (*entities.Player, error)
 
 	//GetPlayer gets a player by id
-	GetPlayer(playerID string) (*entities.Player, error)
+	GetPlayer(playerID uint) (*entities.Player, error)
 }
 
 type playerManager struct {
@@ -35,7 +35,7 @@ func (m *playerManager) CreatePlayer(player *entities.Player) (*entities.Player,
 	return player, nil
 }
 
-func (m *playerManager) GetPlayer(playerID string) (*entities.Player, error) {
+func (m *playerManager) GetPlayer(playerID uint) (*entities.Player, error) {
 	player, err := m.store.GetPlayer(playerID)
 	if err != nil {
 		return nil, err

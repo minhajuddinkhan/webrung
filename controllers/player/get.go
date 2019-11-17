@@ -3,6 +3,7 @@ package player
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/darahayes/go-boom"
 	"github.com/gorilla/mux"
@@ -12,9 +13,13 @@ import (
 
 //GetPlayer GetPlayer
 func (ctrl *controller) GetPlayer(w http.ResponseWriter, r *http.Request) {
-	playerID := mux.Vars(r)["id"]
+	playerID, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		boom.BadRequest(w, err)
+		return
+	}
 	manager := pm.NewPlayerManager(ctrl.playerStore)
-	newGame, err := manager.GetPlayer(playerID)
+	newGame, err := manager.GetPlayer(uint(playerID))
 	if err != nil {
 		switch err.(type) {
 		case (*errors.ErrPlayerNotFound):

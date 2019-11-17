@@ -1,8 +1,6 @@
 package models
 
 import (
-	"strconv"
-
 	"github.com/jinzhu/gorm"
 )
 
@@ -15,15 +13,10 @@ type PlayersInGame struct {
 	Player   Player
 }
 
-//GetPlayerID GetPlayerID
-func (pg *PlayersInGame) GetPlayerID() string {
-	return strconv.Itoa(int(pg.PlayerID))
-}
-
 //JoinableGame JoinableGame
 //this isnt not a table, hence should not be migrated.
 type JoinableGame struct {
-	GameID        string
+	GameID        uint
 	PlayersJoined int
-	PlayerID      string
+	PlayerID      uint
 }

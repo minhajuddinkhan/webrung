@@ -9,6 +9,9 @@ import (
 	pm "github.com/minhajuddinkhan/webrung/managers/player"
 )
 
+//NilGameID NilGameID
+var NilGameID uint = 0
+
 //Info Info
 func (ctrl *Controller) Info(w http.ResponseWriter, r *http.Request) {
 
@@ -27,7 +30,7 @@ func (ctrl *Controller) Info(w http.ResponseWriter, r *http.Request) {
 	}
 
 	enc := json.NewEncoder(w)
-	if gameID == "" || gameID == "0" {
+	if gameID == NilGameID {
 		if err := enc.Encode(player); err != nil {
 			boom.Internal(w)
 			return

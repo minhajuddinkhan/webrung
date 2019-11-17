@@ -1,8 +1,6 @@
 package models
 
 import (
-	"strconv"
-
 	"github.com/jinzhu/gorm"
 )
 
@@ -15,15 +13,7 @@ type Player struct {
 	ImageURL string
 }
 
-func (p *Player) SetID(ID string) error {
-	id, err := strconv.Atoi(ID)
-	p.Model.ID = uint(id)
-	if err != nil {
-		return err
-	}
+func (p *Player) SetID(ID uint) error {
+	p.Model.ID = ID
 	return nil
-}
-
-func (p *Player) GetID() string {
-	return strconv.Itoa(int(p.Model.ID))
 }

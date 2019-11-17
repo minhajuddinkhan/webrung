@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	boom "github.com/darahayes/go-boom"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/minhajuddinkhan/webrung/managers/auth"
 )
 
@@ -30,7 +31,7 @@ func (ctrl *controller) Login(w http.ResponseWriter, r *http.Request) {
 	mgr := auth.NewAuthManager(ctrl.ioclient, ctrl.playerStore, ctrl.gameStore)
 	token, err := mgr.Login(body.Username)
 	if err != nil {
-
+		spew.Dump(err)
 		boom.Unathorized(w, err)
 		return
 	}
