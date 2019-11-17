@@ -9,6 +9,9 @@ import (
 type Manager interface {
 	//Authenticate authenticates a player
 	Login(username string) (token string, err error)
+
+	//Logout logs out a player
+	Logout(token string) error
 }
 
 type manager struct {

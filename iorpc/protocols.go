@@ -24,6 +24,11 @@ type DistributeCardsRequest struct {
 	GameID    uint
 }
 
+//LogoutRequest LogoutRequest
+type LogoutRequest struct {
+	Token string
+}
+
 type Player struct {
 	Cards    []Card
 	PlayerID uint

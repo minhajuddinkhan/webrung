@@ -10,6 +10,7 @@ import (
 //Controller auth controller
 type Controller interface {
 	Login(w http.ResponseWriter, r *http.Request)
+	Logout(w http.ResponseWriter, r *http.Request)
 }
 
 type controller struct {
