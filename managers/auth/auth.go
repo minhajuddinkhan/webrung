@@ -22,3 +22,9 @@ func (m *manager) Login(username string) (token string, err error) {
 	return m.ioclient.AddPlayer(req)
 
 }
+
+func (m *manager) Logout(token string) error {
+
+	_, err := m.ioclient.Logout(token)
+	return err
+}
