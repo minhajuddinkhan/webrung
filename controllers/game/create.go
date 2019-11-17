@@ -7,6 +7,7 @@ import (
 	"github.com/darahayes/go-boom"
 	"github.com/minhajuddinkhan/webrung/entities"
 	"github.com/minhajuddinkhan/webrung/errors"
+	"github.com/minhajuddinkhan/webrung/iorpc"
 	gm "github.com/minhajuddinkhan/webrung/managers/game"
 )
 
@@ -44,12 +45,23 @@ func (ctrl *controller) CreateGame(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	w.Header().Set("content-type", "application/json")
 	encoder := json.NewEncoder(w)
+	w.Header().Set("content-type", "application/json")
+
+	done, err := ctrl.ioclient.SetGameIDInToken(iorpc.JoinGameRequest{
+		GameID: newGame.GameID,
+		Token:  token,
+	})
+	if !done || err != nil {
+		if err := encoder.Encode(err); err != nil {
+			boom.BadRequest(w, err)
+		}
+		return
+	}
+
 	if err = encoder.Encode(newGame); err != nil {
 		boom.Internal(w)
 		return
 	}
-	return
 
 }

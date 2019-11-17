@@ -6,7 +6,6 @@ import (
 
 	"github.com/minhajuddinkhan/webrung/entities"
 	"github.com/minhajuddinkhan/webrung/errors"
-	"github.com/minhajuddinkhan/webrung/iorpc"
 	"github.com/minhajuddinkhan/webrung/store/models"
 )
 
@@ -59,10 +58,6 @@ func (g *gameManager) CreateGame(pl *entities.Player) (*entities.Game, error) {
 		return nil, err
 	}
 
-	req := iorpc.AddPlayerRequest{PlayerID: pl.ID, GameID: gameID}
-	if _, err := g.ioclient.AddPlayer(req); err != nil {
-		return nil, err
-	}
 	return &entities.Game{
 		GameID:        gameID,
 		PlayersJoined: 1,

@@ -17,7 +17,7 @@ type LoginResponse struct {
 }
 
 //Authenticate Authenticate
-func (ctrl *controller) Authenticate(w http.ResponseWriter, r *http.Request) {
+func (ctrl *controller) Login(w http.ResponseWriter, r *http.Request) {
 
 	dec := json.NewDecoder(r.Body)
 	var body LoginRequest
@@ -28,7 +28,7 @@ func (ctrl *controller) Authenticate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	mgr := auth.NewAuthManager(ctrl.ioclient, ctrl.playerStore, ctrl.gameStore)
-	token, err := mgr.Authenticate(body.Username)
+	token, err := mgr.Login(body.Username)
 	if err != nil {
 
 		boom.Unathorized(w, err)
