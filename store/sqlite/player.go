@@ -1,8 +1,6 @@
 package sqlite
 
 import (
-	"strconv"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/minhajuddinkhan/webrung/errors"
@@ -20,22 +18,22 @@ func NewPlayerStore(connStr string) *playerStore {
 }
 
 //CreatePlayer CreatePlayer
-func (ps *playerStore) CreatePlayer(pl *models.Player) (string, error) {
+func (ps *playerStore) CreatePlayer(pl *models.Player) (uint, error) {
 
 	db, err := gorm.Open(ps.dialect, ps.connStr)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 	defer db.Close()
 
 	if err := db.Create(pl).Error; err != nil {
-		return "", err
+		return 0, err
 	}
 
-	return strconv.FormatUint(uint64(pl.Model.ID), 10), nil
+	return pl.Model.ID, nil
 }
 
-func (ps *playerStore) GetPlayer(playerID string) (*models.Player, error) {
+func (ps *playerStore) GetPlayer(playerID uint) (*models.Player, error) {
 	db, err := gorm.Open(ps.dialect, ps.connStr)
 	if err != nil {
 		return nil, err

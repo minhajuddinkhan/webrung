@@ -10,28 +10,28 @@ import (
 //Game game store
 type Game interface {
 	//CreateGame creates a new game
-	CreateGame(createdBy *models.Player) (gameID string, err error)
+	CreateGame(createdBy *models.Player) (gameID uint, err error)
 
 	//GetGame gets a game by id
-	GetGame(gameID string) (*models.Game, error)
+	GetGame(gameID uint) (*models.Game, error)
 
 	//IsPlayerInGame returns if player is joined in a game
-	IsPlayerInGame(playerID string) (bool, error)
+	IsPlayerInGame(playerID uint) (bool, error)
 
 	//JoinGame joins a game
 	JoinGame(gameplay *models.PlayersInGame) error
 
 	//GetPlayersInGame gets all players that are in the game
-	GetPlayersInGame(gameID string) (players []models.PlayersInGame, err error)
+	GetPlayersInGame(gameID uint) (players []models.PlayersInGame, err error)
 
 	//GetJoinableGames gets joinable games. i.e players with less than all 4 players joined.
 	GetJoinableGames() ([]models.JoinableGame, error)
 
 	//GetGameByHost get game by host
-	GetGameByHost(hostID string) (*models.Game, error)
+	GetGameByHost(hostID uint) (*models.Game, error)
 
 	//GetGameByPlayer gets game assosciated by player
-	GetGameByPlayer(playerID string) (*models.Game, error)
+	GetGameByPlayer(playerID uint) (*models.Game, error)
 }
 
 //NewGameStore NewGameStore

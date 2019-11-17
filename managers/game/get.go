@@ -4,7 +4,7 @@ import (
 	"github.com/minhajuddinkhan/webrung/entities"
 )
 
-func (g *gameManager) GetGame(gameID string) (*entities.Game, error) {
+func (g *gameManager) GetGame(gameID uint) (*entities.Game, error) {
 	game, err := g.store.GetGame(gameID)
 	if err != nil {
 		return nil, err
@@ -17,14 +17,14 @@ func (g *gameManager) GetGame(gameID string) (*entities.Game, error) {
 	}
 
 	return &entities.Game{
-		GameID:        game.GetID(),
+		GameID:        game.ID,
 		PlayersJoined: len(players),
-		HostID:        game.GetHostID(),
+		HostID:        game.HostID,
 	}, nil
 
 }
 
-func (g *gameManager) GetJoinableGames(requestedByPlayerID string) ([]entities.Game, error) {
+func (g *gameManager) GetJoinableGames(requestedByPlayerID uint) ([]entities.Game, error) {
 
 	joinableGames, err := g.store.GetJoinableGames()
 	if err != nil {
@@ -33,6 +33,7 @@ func (g *gameManager) GetJoinableGames(requestedByPlayerID string) ([]entities.G
 
 	games := []entities.Game{}
 	for _, game := range joinableGames {
+
 		// cant view a game which a player has already joined.
 		if game.PlayerID == requestedByPlayerID {
 			continue

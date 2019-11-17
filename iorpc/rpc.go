@@ -12,7 +12,7 @@ type Client interface {
 	Dial() (*rpc.Client, error)
 	SetGameIDInToken(request JoinGameRequest) (done bool, err error)
 	AddPlayer(request AddPlayerRequest) (token string, err error)
-	Authenticate(token string) (gameID, playerID string, err error)
+	Authenticate(token string) (gameID, playerID uint, err error)
 	StartGame(request DistributeCardsRequest) (bool, error)
 }
 

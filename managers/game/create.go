@@ -2,7 +2,6 @@ package game
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/minhajuddinkhan/webrung/entities"
 	"github.com/minhajuddinkhan/webrung/errors"
@@ -49,10 +48,9 @@ func (g *gameManager) CreateGame(pl *entities.Player) (*entities.Game, error) {
 	if err != nil {
 		return nil, err
 	}
-	gID, _ := strconv.Atoi(gameID)
 
 	if err := g.store.JoinGame(&models.PlayersInGame{
-		GameID:   uint(gID),
+		GameID:   gameID,
 		PlayerID: player.ID,
 	}); err != nil {
 		return nil, err

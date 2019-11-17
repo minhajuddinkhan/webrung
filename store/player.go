@@ -10,10 +10,10 @@ import (
 type Player interface {
 
 	//CreatePlayer creates a new player
-	CreatePlayer(player *models.Player) (playerID string, err error)
+	CreatePlayer(player *models.Player) (playerID uint, err error)
 
 	//GetPlayer gets a player
-	GetPlayer(playerID string) (*models.Player, error)
+	GetPlayer(playerID uint) (*models.Player, error)
 
 	//GetPlayerByName gets a player by name
 	GetPlayerByName(name string) (*models.Player, error)

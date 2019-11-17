@@ -4,11 +4,11 @@ import "fmt"
 
 //ErrGameIDNotFound ErrGameIDNotFound
 type ErrGameIDNotFound struct {
-	GameID string
+	GameID uint
 }
 
 func (e *ErrGameIDNotFound) Error() string {
-	return fmt.Sprintf("%s doesn't exist in db", e.GameID)
+	return fmt.Sprintf("%d doesn't exist in db", e.GameID)
 }
 
 //ErrFailCreateGameInDb ErrFailCreateGameInDb

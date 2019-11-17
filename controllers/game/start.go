@@ -2,6 +2,7 @@ package game
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/darahayes/go-boom"
 	"github.com/gorilla/mux"
@@ -11,7 +12,11 @@ import (
 
 func (ctrl *controller) StartGame(w http.ResponseWriter, r *http.Request) {
 
-	gameID := mux.Vars(r)["id"]
+	gameID, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		boom.BadRequest(w, err)
+		return
+	}
 	token := r.Header.Get(AuthHeader)
 
 	_, playerID, err := ctrl.ioclient.Authenticate(token)
@@ -21,7 +26,7 @@ func (ctrl *controller) StartGame(w http.ResponseWriter, r *http.Request) {
 	}
 
 	mgr := gm.NewGameManager(ctrl.gameStore, ctrl.ioclient)
-	_, err = mgr.StartGame(gameID, &entities.Player{
+	_, err = mgr.StartGame(uint(gameID), &entities.Player{
 		ID: playerID,
 	})
 

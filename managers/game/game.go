@@ -13,16 +13,16 @@ type GameManager interface {
 	CreateGame(player *entities.Player) (game *entities.Game, err error)
 
 	//GetGame gets a game
-	GetGame(gameID string) (*entities.Game, error)
+	GetGame(gameID uint) (*entities.Game, error)
 
 	//JoinGame joins a game
 	JoinGame(player *entities.Player, game *entities.Game) error
 
 	//StartGame starts a game
-	StartGame(gameID string, startBy *entities.Player) (bool, error)
+	StartGame(gameID uint, startBy *entities.Player) (bool, error)
 
 	//GetJoinableGames get joinable games
-	GetJoinableGames(requestedByPlayerID string) (games []entities.Game, err error)
+	GetJoinableGames(requestedByPlayerID uint) (games []entities.Game, err error)
 }
 
 type gameManager struct {

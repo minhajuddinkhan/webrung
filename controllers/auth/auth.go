@@ -30,7 +30,6 @@ func (ctrl *controller) Login(w http.ResponseWriter, r *http.Request) {
 	mgr := auth.NewAuthManager(ctrl.ioclient, ctrl.playerStore, ctrl.gameStore)
 	token, err := mgr.Login(body.Username)
 	if err != nil {
-
 		boom.Unathorized(w, err)
 		return
 	}

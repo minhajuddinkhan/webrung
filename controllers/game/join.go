@@ -2,6 +2,7 @@ package game
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/darahayes/go-boom"
 	"github.com/gorilla/mux"
@@ -12,9 +13,9 @@ import (
 
 func (ctrl *controller) JoinGame(w http.ResponseWriter, r *http.Request) {
 
-	gameID := mux.Vars(r)["id"]
-	if gameID == "" {
-		boom.BadRequest(w, "empty game id")
+	gameID, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		boom.BadRequest(w, "invalid game id")
 		return
 	}
 
@@ -29,14 +30,14 @@ func (ctrl *controller) JoinGame(w http.ResponseWriter, r *http.Request) {
 
 	err = gameManager.JoinGame(
 		&entities.Player{ID: playerID},
-		&entities.Game{GameID: gameID})
+		&entities.Game{GameID: uint(gameID)})
 
 	if err != nil {
 		boom.BadRequest(w, err)
 		return
 	}
 	_, err = ctrl.ioclient.SetGameIDInToken(iorpc.JoinGameRequest{
-		GameID: gameID,
+		GameID: uint(gameID),
 		Token:  r.Header.Get("token"),
 	})
 

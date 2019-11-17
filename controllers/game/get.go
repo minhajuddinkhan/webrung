@@ -3,6 +3,7 @@ package game
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/darahayes/go-boom"
 	"github.com/gorilla/mux"
@@ -34,9 +35,14 @@ func (ctrl *controller) GetAllGames(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *controller) GetGame(w http.ResponseWriter, r *http.Request) {
-	gameID := mux.Vars(r)["id"]
+	gameID, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		boom.BadRequest(w, err)
+		return
+	}
+
 	gameManager := gm.NewGameManager(ctrl.gameStore, ctrl.ioclient)
-	newGame, err := gameManager.GetGame(gameID)
+	newGame, err := gameManager.GetGame(uint(gameID))
 	if err != nil {
 		switch err.(type) {
 		case (*errors.ErrGameIDNotFound):
