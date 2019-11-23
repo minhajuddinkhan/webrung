@@ -191,3 +191,13 @@ func (sqlite *Game) GetGameByPlayer(playerID uint) (*models.Game, error) {
 		HostID: hostID,
 	}, nil
 }
+
+func (sqlite *Game) StartGame(gameID uint) error {
+
+	db, err := gorm.Open(sqlite.dialect, sqlite.connStr)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	return db.Model(models.Game{}).Where("id = ?", gameID).Update("started", true).Error
+}

@@ -10,4 +10,6 @@ type Game struct {
 	WinnerID uint
 	Host     Player
 	HostID   uint
+	Started  bool
+	Finished bool
 }

@@ -32,6 +32,8 @@ type Game interface {
 
 	//GetGameByPlayer gets game assosciated by player
 	GetGameByPlayer(playerID uint) (*models.Game, error)
+
+	StartGame(gameID uint) error
 }
 
 //NewGameStore NewGameStore
