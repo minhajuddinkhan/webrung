@@ -14,6 +14,9 @@ func (gm *gameManager) StartGame(gameID uint, startBy *entities.Player) (bool, e
 	if err != nil {
 		return started, err
 	}
+	if gameToStart.Started {
+		return started, fmt.Errorf("game already started")
+	}
 
 	if gameToStart.HostID != startBy.ID {
 		return started, fmt.Errorf("game cannot be started by someone other than the host")
@@ -28,6 +31,7 @@ func (gm *gameManager) StartGame(gameID uint, startBy *entities.Player) (bool, e
 		return started, fmt.Errorf("cannot start game until 4 players have joined")
 	}
 
+	//TODO:: check if game has already started?
 	playerIds := make([]uint, len(players))
 	for i, p := range players {
 		playerIds[i] = p.PlayerID
@@ -38,5 +42,11 @@ func (gm *gameManager) StartGame(gameID uint, startBy *entities.Player) (bool, e
 		GameID:    gameID,
 	})
 
-	return started, err
+	err = gm.store.StartGame(gameID)
+	if err != nil {
+		return false, err
+	}
+	started = true
+
+	return started, nil
 }
